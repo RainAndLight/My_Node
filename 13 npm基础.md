@@ -126,3 +126,60 @@ app.get('/time',(req,res) => {
 })
 ```
 
+# npm使用
+
++ ### 基本操作
+
+``` js
+//初始化仓库
+npm init
+npm init --yes //默认所有yes
+
+//全局安装的模块 不能通过 require删除 -g全局
+npm i 包名 -g
+//查看全局安装时的安装目录
+npm root -g
+
+//卸载
+npm un 包名
+
+//一次性安装多个包 空格隔开
+npm i express mysql
+
+//查看缓存目录
+npm config get cache
+//从缓存目录安装包  999是分钟 超过这个时间才取服务器下载
+npm i 包名 --cache-min 99999
+
+
+```
+
++ ### 切换npm镜像源
+
+``` js
+//查看当前下载源
+npm config ls
+//其中这一行代表第三方模块的网站
+registry = "https://registry.npmjs.org/"
+
+// 下载包的时候切换下载源
+npm install express --registry=https://registry.npm.taobao.org
+
+//全局设置
+npm config set registry https://registry.npm.taobao.org
+
+// 原始的路径
+// https://registry.npmjs.org/
+// nrm 是管理镜像源的模块，通过nrm来管理镜像源
+npm i nrm # 自行查询如何使用 
+```
+
++ ### package.json
+
+  + 创建package
+
+  ``` js
+  npm init -yes
+  ```
+
+  

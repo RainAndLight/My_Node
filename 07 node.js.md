@@ -288,9 +288,20 @@ sever.on('request', (req, res) => {
 
 + 接收查询字符串格式的数据
 
-  ``` js
-  
-  ```
+## 设置请求头的2种方法
+
+``` js
+//方法一
+res.setHeader('Content-Type','text/html;charset=utf-8')
+//方法二
+res.writeHead(200,{				//200为状态码
+    'Content-Type','text/html;charset=utf-8'   
+})
+//方法三
+
+```
+
+
 
 # npm
 
@@ -359,7 +370,7 @@ app.post()
 + 参数  `req、res、next`
 + next()会阻塞
 
-`处理静态文件语法：`
+### 处理静态文件语法：
 
 ``` js
 const path = require('path');
@@ -384,7 +395,7 @@ app.use((req,req,next) => {
 app.use(express.static('public'))
 ```
 
-`处理post请求`
+### 处理post请求
 
 ``` js
 app.use((req,res,next),() => {
@@ -398,6 +409,53 @@ const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoeded({extended:false}))
 //extended:false 表示 接收的数据用querystring模块处理成对象
+//调用post获得的参数
+app.post('/deleteMsg',(req,res) => {
+    console.log（req.body）
+})
+```
+
+### Multer中间件：
+
+介绍：
+
++ multer是一个node.js中间件
+
+为什么需要他：
+
++ 因为上一个中间件处理不了content-type为·`multipart/form-data`的表单数据
+
+作用：
+
++ 上传文件
+
+#### 使用教程
+
+##### 安装
+
+``` bash
+npm i --save multer
+```
+
+##### 基础使用
+
+``` js
+var express = require('express')
+var multer = require('multer')
+var upload = multer({ dest: 'uploads/' }) //会创建一个uploads目录放文件
+var app = express()
+app.post(/请求接口, upload.single('文件的name'), function (req, res, next) {
+  // req.file 是 `avatar` 文件的信息
+  // req.body 将具有文本域数据，如果存在的话
+})
+```
+
+##### 注意：
+
+使用multer，在静态资源中间件加载中加入一句
+
+``` js
+app.use(express.status('uploads'))
 ```
 
 
@@ -421,3 +479,69 @@ app.get('/time',(req,res) => {
     res.send(Date.now()+'')
 })
 ```
+
+## module.exports 导出属性和方法
+
+- 将变量、对象、函数等挂载到global对象上并不推荐，因为容易造成变量污染。
+- 推荐使用 module.exports 导出模块中定义好的变量、对象、方法
+- 使用require加载（导入）模块后，就能使用模块中定义好的变量、对象、方法了
+
+bbb.js 中定义一些变量，然后使用 `module.exports导出`：
+
+```js
+// 定义一些变量
+let abc = 'hello';
+
+let fn = (x, y) => {
+    console.log(x + y);
+};
+
+// Node提供一套方案：
+// 使用 module.exports 来导出模块（导出的只能是对象或函数）
+
+module.exports = {
+    abc: abc,
+    fn: fn
+};
+```
+
+aaa.js 加载 bbb.js ，然后就得到了 bbb 中导出的对象：
+
+- 导入自己定义的js文件，必须加  `./`
+
+```js
+// 导入模块(基本上和之前加载模块一样)
+const bbb = require('./bbb.js');
+
+// console.log(bbb); // { abc: 'hello', fn: [Function: fn] }
+
+console.log(bbb.abc); // hello
+bbb.fn(7, 8); // 15
+```
+
+### mysql的封装调用
+
+``` js
+//封装mysql模块
+function database(sql, value, callback){
+    const mysql = require('mysql');
+    const conn = mysql.createConnection({
+        host: 'localhost',
+        port: 3306,
+        user: 'root',
+        password: 'admin',
+        database: 'herosnverdie',
+        multipleStatements: true
+    });
+    conn.connect();
+    conn.query(sql, value, callback);
+    conn.end()
+}
+module.exports = database;
+```
+
+``` js
+//调用
+db（）
+```
+

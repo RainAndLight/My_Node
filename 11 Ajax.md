@@ -1,3 +1,7 @@
+---
+typora-root-url: images
+---
+
 # 客户端(Client)与服务器(Server)
 * 浏览器相当于一个客户端
 * 真实的服务器也就是一个安装了服务软件的超级计算机
@@ -349,4 +353,43 @@ document.getElementById('btn').onclick = function () {
     }
 }
 ```
+
+# Ajax跨域请求
+
+## 同源策略
+
+所谓同源指的是三个相同
+
+- 协议相同（http https）
+- 域名相同
+- 端口相同（http默认80端口，https默认443端口）
+
+![1567920990384](C:\github 库\mynote\images\1567920990384.png)
+
++ 注意 ： 即使localhost 和 127.0.0.1 指向同一地址 也不是同源
++ http 默认端口 80  https默认端口443
++ www.a.com 和 a.com 不同
+
+`如果非同源 则 Ajax请求无效`
+
+## 跨域请求的2个方法
+
+### 方法一：jsonp
+
+在Ajax请求中，datatype：jsonp即可
+
+### 方法二：cors方案
+
+服务端加一个请求头即可
+
+# ![1567921229728](/1567921229728.png)
+
+``` js
+app.get('/getMsg',(req,res) => {
+    res.setHeader('Access-Control-Allow-Origin','*')
+})
+```
+
++ `*`表示允许所有网站请求
++ 可以更改成指定网站的Ajax请求才被允许
 
