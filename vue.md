@@ -96,7 +96,7 @@
 + 懒人写法 fn3（）{   }  等价于 fn3： function (){}
 + methods中不能用箭头函数 this绑定父级作用域
 
-## 差值表达式：
+## 插值表达式：
 
 ![1568000882998](C:\github 库\My_Node\vue.assets\1568000882998.png)
 
@@ -212,6 +212,7 @@ item in items  // item为当前遍历属性对象的值
 
 + 使用  ： 通常给列表数据中的唯一值 也可以用索引值
 + `:key='index'`
++ `v-for(item , key , index ) in items`
 
 案例：
 
@@ -248,6 +249,359 @@ item in items  // item为当前遍历属性对象的值
 # 第一天总结
 
 ![1568022088140](C:\github 库\My_Node\vue.assets\1568022088140.png)
+
+
+
+## v-bind
+
++ `v-bind:id='ID'`
++ 简写 `<p :id="'ID'">  </p> ` // 不加引号为变量
++ 加引号和不加引号区别
++ 绑定一般属性的用法  <p v-bind:属性名='数据对象中的属性名'></p>>
+
+### 案例：基本使用
+
+``` js
+//代码：
+<body>
+    <div id="app">
+
+        <input type="text" value="666" v-bind:id='ID'></input>
+        <img :src="src" alt="" style="width:100px;height: 100px;">
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                ID: 'a',
+                src: 'http://pic37.nipic.com/20140113/8800276_184927469000_2.png'
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+```
+
+### 绑定class对象语法：
+
+绑定clss的对象语法
+
+案例：v-bind： 绑定 class 对象语法：
+
+语法： ` b-bind：class=" clss类名 ： 布尔值 "`//布尔值一般用data数据边量替换
+
++ 原来的class也会存在 新添加的class如果渲染有重复 那么将覆盖效果
+
+``` html
+	<style>
+        .left {
+            position: absolute;
+            left: 0;
+            color: brown;
+        }
+
+        .right {
+            position: absolute;
+            right: 0;
+            color: #0f0;
+        }
+
+        .default {
+            font-size: 40px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <!--   :class="{ class名称": 布尔值 }" -->
+        <p :class="{left:showLeft,right:showRight}" class="default">
+            9月13号放假去天安门
+        </p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                showLeft: true,
+                showRight: true
+            },
+            methods: {}
+        });
+    </script>
+</body>
+```
+
+
+
+### 绑定class数组语法：
+
+语法：`：class="[  class变量1 ， class变量2   ]"`
+
+代码：
+
++ class变量1 可以写为 [{ class名 ： 代表布尔的变量 }]
++ 数组中加入单双引号 代表这是个 字符串 
+
+``` html
+<body>
+    <!-- **`任务`**
+
+        1. 实例化一个Vue实例
+        2. 定义一个p标签 原有class 为default 
+        3. 使用v-bind数组语法将class变为 default primary danger info
+        
+        **`路径`**参照实现代码 -->
+    <div id="app">
+        <p class="default" :class="[primary,'danger','info']">666</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                primary: 'primary',
+                danger: true,
+                info: true
+            },
+            methods: {}
+        });
+    </script>
+</body>
+```
+
+
+
+### 绑定 style对象语法
+
+语法： ` v-bind：style="{  css属性：变量名  }"` 
+
+案例：
+
++ 比如 font-size等 带 -  这个符号的  需要采用驼峰写法 把这个 - 去掉
+
+``` html
+<body>
+    <div id="app">
+        <p style="color:aqua" :style="{color:color , fontSize:fontsize ,fontWeight:fontwight}">Lisa:刀剑神域op</p>
+    </div>
+    <script src="./vue.js"></script>
+    <script>
+        //         **`任务`**
+
+        // 1. 实例化一个Vue实例
+        // 2. 定义一个p标签 原有样式 为字体红色
+        // 3. 使用v-bind绑定对象语法 将字体大小设置为48px ,加粗
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                color: 'red',
+                fontsize: '48px',
+                fontwight: 1000
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+```
+
+### 绑定 style 数组 写法：
+
+语法：  v-bind:style="[对象1，对象2]"      ：style="[ {color:red},{fontSize:'40px'} ]"   
+
+代码：
+
++ 对象1 可以为data 数据
+
+``` html
+<body>
+    <div id="app">
+        <p :style="[a]" style="color:red">123456</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        // ** `任务` **
+
+        // 1. 实例化一个Vue实例
+        // 2. 定义一个p标签 原有样式 为字体红色
+        // 3. 使用v - bind绑定数组语法 将字体大小设置为48px, 加粗
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                a: {
+                    fontSize: '48px',
+                    fontWeight: 1000,
+                    color: "aqua"
+                }
+            },
+            methods: {
+
+            }
+        });
+    </script>
+```
+
+
+
+案例：控制style 中 字体大小
+
++ 所用到的 两个Number 方法 parseInt parseFloat   比如 48px  直接取48  如果是 px48 不行
+
+``` html
+<body>
+    <div id="app">
+        <button @click="big">变大</button>
+        <button @click="sm">变小</button>
+        <p :style="[a]" style="color:red">123456</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        // ** `任务` **
+
+        // 1. 实例化一个Vue实例
+        // 2. 定义一个p标签 原有样式 为字体红色
+        // 3. 使用v - bind绑定数组语法 将字体大小设置为48px, 加粗
+        // 4. 添加按钮 完成字体变大变小
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                a: {
+                    fontSize: '48px',
+                    fontWeight: 1000,
+                    color: "aqua"
+                }
+            },
+            methods: {
+                big() {
+                    this.a.fontSize = Number.parseInt(this.a.fontSize) + 10 + 'px'
+                },
+                sm() {
+                    this.a.fontSize = Number.parseInt(this.a.fontSize) - 10 + 'px'
+                }
+            }
+        });
+    </script>
+</body>
+```
+
+
+
+## v-model：
+
++ 会忽略 表单元素的value checked selected 特性的初始值  以data中选项中声明的为初始值
++ 特点：数据的双向绑定、双向同步
+
+### 原理：
+
++ 注意 这里 用的是` input 事件` 才能实现 随时改变
+
+![1568085842802](C:\github 库\My_Node\vue.assets\1568085842802.png)
+
+
+
+### 双向绑定基本代码：
+
+``` html
+<body>
+    <div id="app">
+        <p>{{msg}}</p>
+        <input type="text" v-model="msg">
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: '123'
+            },
+            methods: {}
+        });
+    </script>
+</body>
+```
+
+
+
+### v-model 绑定其他表单元素：
+
+![1568086520785](C:\github 库\My_Node\vue.assets\1568086520785.png)
+
+``` html
+
+```
+
+
+
+### v-cloak  防止闪烁
+
+1. 在#app 那个标签上写上 v-cloak 
+2. style中加入[ v-cloak ] {  display:none;  } 属性选择器
+
+### v-once 
+
+作用 ： 只渲染一次页面视图
+
+### 案例：
+
+add 和 remove
+
+![1568099886472](C:\github 库\My_Node\vue.assets\1568099886472.png)
+
+remove 可以采用es6的箭头函数
+
+
+
+
+
+### 过滤器
+
++ 全局 和 局部的区别  
+  + 全局 在new vue 上面
+  + 局部 在Vue实例上的filters 所有过滤器集合 当前实例使用
+
+``` js
+//全局
+Vue.filter（）Vue.filter('toUpper',function(){
+
+}) // 转大写
+```
+
+
+
+![1568101712245](C:\github 库\My_Node\vue.assets\1568101712245.png)
+
+### 局部过滤器：
+
+![1568103118456](C:\github 库\My_Node\vue.assets\1568103118456.png)
+
+第三种方式![1568103181345](C:\github 库\My_Node\vue.assets\1568103181345.png)
+
+案例：
+
+![1568104507291](C:\github 库\My_Node\vue.assets\1568104507291.png)
+
+# debugger调试
+
+
+
+## refs 操作DOM元素
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -309,17 +663,18 @@ item in items  // item为当前遍历属性对象的值
 
 v-bind:  是指要绑定的属性
 
-v-oon  绑定事件
+v-on  绑定事件
 
 
 
-小结：
+小结：![1568108089012](C:\github 库\My_Node\vue.assets\1568108089012.png)
 
 ![1567955357563](C:\github 库\mynote\vue.assets\1567955357563.png)
 
 ![1567954347835](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1567954347835.png)
 
 `this指向 实例化对象` 所以调用data里面的属性 方法 必须用this.什么
+
 
 
 # 打包工具Webpack，Gulp
