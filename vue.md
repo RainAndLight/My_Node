@@ -98,7 +98,7 @@
 
 ## 插值表达式：
 
-![1568000882998](C:\github 库\My_Node\vue.assets\1568000882998.png)
+![1568000882998](.\vue.assets\1568000882998.png)
 
 ## 指令：
 
@@ -125,7 +125,7 @@ var nm = new Vue({
 })
 ```
 
-![1568011695779](C:\github 库\My_Node\vue.assets\1568011695779.png)
+![1568011695779](.\vue.assets\1568011695779.png)
 
 ### v-html 和 v-text:
 
@@ -136,7 +136,7 @@ var nm = new Vue({
 
 ### v-if 和 v-show（条件渲染）:
 
-![1568013065518](C:\github 库\My_Node\vue.assets\1568013065518.png)
+![1568013065518](.\vue.assets\1568013065518.png)
 
 + v-show 会渲染标签，只不过在样式中加入一个 display：none；
 
@@ -146,7 +146,7 @@ var nm = new Vue({
 
   else 则用v-if  这个用的多
 
-![1568013720455](C:\github 库\My_Node\vue.assets\1568013720455.png)
+![1568013720455](.\vue.assets\1568013720455.png)
 
 + `如果不想要div 可以吧div标签换成 template`,这个方法v-show不好使
 + 这里会定义一个showmessages属性 值为布尔值 来控制元素的显示隐藏
@@ -160,7 +160,7 @@ var nm = new Vue({
 
 案例：点击出现和消失
 
-![1568015346369](C:\github 库\My_Node\vue.assets\1568015346369.png)
+![1568015346369](.\vue.assets\1568015346369.png)
 
 + v-on：cilck 等价于 `@click`
 + 事件传参
@@ -189,7 +189,7 @@ var nm = new Vue({
 
 案例：
 
-![1568017457266](C:\github 库\My_Node\vue.assets\1568017457266.png)
+![1568017457266](.\vue.assets\1568017457266.png)
 
 案例中注意：
 
@@ -216,13 +216,13 @@ item in items  // item为当前遍历属性对象的值
 
 案例：
 
-![1568019857024](C:\github 库\My_Node\vue.assets\1568019857024.png)
+![1568019857024](.\vue.assets\1568019857024.png)
 
 ### v-if 和 v-for相遇
 
 + v-for 的 优先级 大于v-if
 
-![1568020080503](C:\github 库\My_Node\vue.assets\1568020080503.png)
+![1568020080503](.\vue.assets\1568020080503.png)
 
 ``` js
 <body>
@@ -248,7 +248,7 @@ item in items  // item为当前遍历属性对象的值
 
 # 第一天总结
 
-![1568022088140](C:\github 库\My_Node\vue.assets\1568022088140.png)
+![1568022088140](.\vue.assets\1568022088140.png)
 
 
 
@@ -502,7 +502,7 @@ item in items  // item为当前遍历属性对象的值
 
 + 注意 这里 用的是` input 事件` 才能实现 随时改变
 
-![1568085842802](C:\github 库\My_Node\vue.assets\1568085842802.png)
+![1568085842802](.\vue.assets\1568085842802.png)
 
 
 
@@ -531,7 +531,7 @@ item in items  // item为当前遍历属性对象的值
 
 ### v-model 绑定其他表单元素：
 
-![1568086520785](C:\github 库\My_Node\vue.assets\1568086520785.png)
+![1568086520785](.\vue.assets\1568086520785.png)
 
 ``` html
     <div id="app">
@@ -808,7 +808,7 @@ delItem (index){
 
 其中 tolower 的方法 原始写法为
 
-![1568191719505](C:\github 库\My_Node\vue.assets\1568191719505.png)
+![1568191719505](.\vue.assets\1568191719505.png)
 
 ## debugger
 
@@ -895,13 +895,15 @@ Vue.filter（）Vue.filter('toUpper',function(){
 
 
 
-![1568101712245](C:\github 库\My_Node\vue.assets\1568101712245.png)
+![1568101712245](.\vue.assets\1568101712245.png)
 
 ### 局部过滤器：
 
-![1568103118456](C:\github 库\My_Node\vue.assets\1568103118456.png)
+.\vue.assets\1568103118456.png)
 
-第三种方式![1568103181345](C:\github 库\My_Node\vue.assets\1568103181345.png)
+第三种方式
+
+![1568103181345](./vue.assets\1568103181345.png)
 
 案例：
 
@@ -909,13 +911,258 @@ Vue.filter（）Vue.filter('toUpper',function(){
 
 
 
+## 全局自定义指令 directive
+
+### 全局：
+
+`inserted`  如果要操作DOM元素 加入 这个
+
+``` html
+<body>
+    <div id="app">
+        <!-- <p>{{name}}</p> -->
+        <input type="text" v-focus="123">
+        <div v-text="content"></div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        // 全局指令
+        Vue.directive('focus', {
+            inserted(dom, expresstion) {
+                dom.focus();
+                dom.value = expresstion.value
+            }
+        })
+        Vue.directive('text', {
+            inserted(dom) {
+                dom.value = expresstion.vlaue
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                name: "123",
+                content: '我是div 中的内容'
+            },
+            methods: {
+
+            }
+        });
+    </script>
+</body>
+```
+
+### 局部
+
++ 注意 在选项中 的是`directives`
+
+语法：directive：{  key指令名称 （dom，expression） {  执行函数 }   } 
+
+``` html
+// inserted 的第二个参数  expresstion  他的属性是 expression.value
+
+一般用法  dom.什么 = expresstion.value
+
+directives: {
+                focus: {
+                    inserted(dom, expression) {
+                        dom.focus()
+                        dom.value = expression.value
+                    }
+                }
+            }
+```
+
+案例：
+
+``` html
+<body>
+    <div id="app">
+        <input type="text" v-focus>
+        <div v-html="content"></div>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                name: "123",
+                content: '<p style="color:red">123</p>',
+            },
+            methods: {
+
+            },
+            directives: {
+                html: {
+                    inserted(dom, expression) {
+                        dom.innerHTML = expression.value;
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+```
 
 
 
+## 计算属性 computerd:
+
+语法：
+
+`computed：{  key(计算属性的名称)：value（带返回值的函数（必须return）  }`
+
++ 场景  当 插值表达式 或者 v-bind 过于复杂的情况下可以采用计算机属性 对于任何复杂逻辑 都可以使用计算属性的方法 简单的逻辑也可以使用计算属性
++ methods 和 computed 的区别
+  + methods 每次都执行 
+  + computed 首先会执行一次，然后存到缓存区 下次使用的时候会和缓存区的对比 如果 有 则直接用缓存区的值 
+
++ 注意  计算属性中  异步  不能用  比如 ajax 和  settimeout
++ computed  不需要传参  直接调用即可 
+
+代码：
+
+``` html
+<body>
+    <div id="app">
+        <p>{{reverseMsg}}</p>
+        <input type="text" v-model="msg">
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                msg: "abc",
+            },
+            methods: {},
+            computed: {
+                reverseMsg() {
+                    return this.msg.split("").reverse().join("")
+                }
+            }
+        });
+    </script>
+</body>
+```
+
+案例：
+
+``` html
+<body>
+    <div id="app">
+        <p :class="{select}">哈哈哈哈</p>
+        <p :class="selectClass">哈哈哈哈</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                select: true
+            },
+            methods: {},
+            computed: {
+                selectClass() {
+                    return this.select ? 'select' : ''
+                }
+            }
+        });
+    </script>
+</body>
+```
+
+## 模糊查询 indexOf
+
+代码
+
++ indexOf 也可以 用 startsWith 代替 不过 不能写 >-1
+
+``` html
+// 需要v-for 中  吧 list 都换成  filter 这个新数组
+// 在标签内 调用 v-filter
+computed: {
+                filter() {
+                    return this.list.filter((item) => {
+                        return item.name.indexOf(this.searchValue) > -1
+                    })
+                }
+            }
+```
+
+## Vue 的网络请求
+
+1. 老版本会使用 vue-resource  自带方法 已经停止维护
+2. 现在使用`axios` 库
+
++ 既可以在客户端使用 也可以在node.js中使用 发送 http请求的库
++ 支持`promise `
++ 不支持jsonp跨域 如果需要  可以赢 插件 `jsonp`
 
 
 
+###  promise
 
+``` js
+new promise(function(resolve,reject){
+    if(flag === 1) {
+        resolve('success') // 成功
+    }else{
+        reject（new Eroor('fail')） // 抛出错误
+    }
+}).then(result => {
+	return axios{url,data:result}
+}).cath(err=> {
+    
+})
+```
+
+
+
+![1568270835750](vue.assets/1568270835750.png)
+
+### axios
+
++ axios 返回的就是一个promise 对象
+
+``` html
+axios === new promise(function(resolve,reject){
+
+})
+axios().then(拿到返回数据（接口返回数据）).catch（err =>）
+```
+
+### json-server工具的使用
+
+``` js
+npm i -g json-server  // 还可以用 yarn 和 cnpm
+```
+
+``` js
+json-server --watch db.json  //--watch 为 监视
+```
+
++ .json 文件中 先写一个对象  里面放一个表名 然后在存放数据 
+
+``` json
+{
+  "user": [{
+      "name": "苹果",
+      "date": "2018-05-30T08:07:20.089Z",
+      "id": 1
+    },
+    {
+      "name": "小米",
+      "date": "2018-07-04T08:59:51.200Z",
+      "id": 2
+    }
+  ]
+}
+```
+
++ 控制台 返回 `Resources http://localhost:3000/user`
+
+其中 Resourcehttp://localhost:3000/user  在加一个 /id  表示  切换id 可以 读取json文件
 
 
 
@@ -983,7 +1230,7 @@ v-on  绑定事件
 
 
 
-小结：![1568108089012](C:\github 库\My_Node\vue.assets\1568108089012.png)
+小结：![1568108089012](.\vue.assets\1568108089012.png)
 
 ![1567955357563](C:\github 库\mynote\vue.assets\1567955357563.png)
 
