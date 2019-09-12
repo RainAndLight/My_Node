@@ -905,7 +905,7 @@ Vue.filter（）Vue.filter('toUpper',function(){
 
 案例：
 
-![1568104507291](C:\github 库\My_Node\vue.assets\1568104507291.png)
+![1568104507291](.\vue.assets\1568104507291.png)
 
 
 
