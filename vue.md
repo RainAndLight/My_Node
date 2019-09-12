@@ -534,25 +534,345 @@ item in items  // item为当前遍历属性对象的值
 ![1568086520785](C:\github 库\My_Node\vue.assets\1568086520785.png)
 
 ``` html
-
+    <div id="app">
+        <p>{{name}}</p>
+        <input type="text" :value="name" @input="changeInput">
+        <p>{{checkboxName}}</p>
+        <input type="checkbox" v-model="checkboxName">
+        <p>{{textareaName}}</p>
+        <textarea v-model="textareaName" name="" id="" cols="30" rows="10"></textarea>
+        <p>{{radioName}}</p>
+        <input type="radio" v-model="radioName" value="男">男
+        <input type="radio" v-model="radioName" value="女">女
+        <p>{{selectName}}</p>
+        <select v-model="selectName">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                name: '123',
+                checkboxName: '456',
+                textareaName: '789',
+                radioName: '男',
+                selectName: '1'
+            },
+            methods: {
+                changeInput(e) {
+                    this.name = e.target.value
+                }
+            }
+        })
+    </script>
 ```
 
 
 
-### v-cloak  防止闪烁
+## v-cloak  防止闪烁
 
 1. 在#app 那个标签上写上 v-cloak 
 2. style中加入[ v-cloak ] {  display:none;  } 属性选择器
 
-### v-once 
+## v-once 
 
 作用 ： 只渲染一次页面视图
 
 ### 案例：
 
-add 和 remove
+增加商品：
 
-![1568099886472](C:\github 库\My_Node\vue.assets\1568099886472.png)
+``` html
+// 1. 注册点击事件
+// 2. 让input text 与 data 中的 name 双向绑定 
+// 3. 向list 数组中 添加 name
+
+<input type="text" v-model="name">
+<input type="button" value="添加" @click="addItem" :disabled="!name">
+
+addItem() {
+                    console.log(123)
+                    this.list.unshift({
+                        name: this.name,
+                        time: new Date()
+                    })
+
+                }
+```
+
+删除案例：(  splice 方法  )
+
+``` html
+//关键  v-for循环在时  <tr v-for="(item,index) in list" :key='index'>  所以可以拿到他的index 值 相当于id
+// 删除  delItem(index) {
+                    if (confirm('你确定删除吗？')) {
+                        this.list.splice(index, 1)
+                    }
+                }
+```
+
+删除案例：（filter 方法）
+
+``` html
+delItem (index) {
+	this.list = this.list.filter(item,index){return index!index}
+}
+```
+
+删除案例（es6 filter 简写方式）
+
+``` html
+delItem (index){
+	this.list = this.list.filter((item,index) => index!index)
+}
+```
+
+
+
+## 数组的过滤器 filter 方法
+
++ filter 方法函数中需要返回一个 条件表达式  => 布尔值 
+  + 如果布尔值 为true 则将当前item
+  + 如果布尔值为 false  则 不返回
+
+``` js
+//使用方法
+[1,2,3,4,5,6].filter(fucntion(item,index){return item > 4}) //[5,6]
+
+```
+
+
+
+## vue 中的 filter 过滤器
+
+使用场景：
+
++ data中的数据格式 -- 日期格式 货币格式  大小写 等
++ 使用位置  {{  msg |  过滤器名称  }}   和  v-bind="表达式 |  过滤器的名称"
+
++ 全局 和 局部的区别  
+  + 全局 在new vue 上面 Vue.filter( '过滤器名称', (value要处理的参数) => {reutrn 返回数据处理的结果} )
+  + 全局过滤器不会覆盖原数据
+
+  ``` html
+  <body>
+  
+      <div id="app" v-cloak>
+          <p>{{name | toUpper}}</p>
+      </div>
+      <script src="../vue.js"></script>
+      <script>
+          Vue.filter('toUpper', (value) => {
+              return value.toUpperCase();
+          })
+          var vm = new Vue({
+              el: '#app',
+              data: {
+                  name: 'abc'
+              },
+              methods: {}
+          });
+      </script>
+  </body>
+  ```
+
+  
+
+  案例： 将abc 中 第一个字母大写
+
+  + 其中` toUpperCase()`  为转化成大写   
+  + `charAt（）`  返回指定索引下标的元素
+  + `sbutr（）`截取字符串
+
+  ``` html
+  <body>
+  
+      <div id="app" v-cloak>
+          <p>{{name | toUpper}}</p>
+          <input type="text" v-model="name">
+      </div>
+      <script src="../vue.js"></script>
+      <script>
+          Vue.filter('toUpper', (value) => {
+              return value.charAt(0).toUpperCase() + value.substr(1)
+          })
+          var vm = new Vue({
+              el: '#app',
+              data: {
+                  name: 'abc'
+              },
+              methods: {}
+          });
+      </script>
+  </body>
+  ```
+
+  
+
+  + 局部 在Vue实例上的选项上 与 el data methods 同级 `filters` 所有过滤器集合 当前实例使用 
+
+  ``` html
+  <body>
+      <div id="app">
+          <p>{{ 'abc' | toUpper }}</p>
+      </div>
+      <script src="../vue.js"></script>
+      <script>
+          var vm = new Vue({
+              el: '#app',
+              data: {
+  
+              },
+              methods: {
+  
+              },
+              filters: {
+                  toUpper(value) {
+                      //第一种方法
+                      return value.charAt(0).toUpperCase() + value.substr(1)
+                      //第二种方法
+                      toUpper(value) {
+                      return value.split("").map((item, index) => {
+                          if (index === 0) {
+                              return item.toUpperCase()
+                          } else {
+                              return item
+                          }
+                      }).join("")
+                  }
+                      //第三种方法
+                      return value.split("").map((item,index) => (
+                         	index === 0 ?  item.toUpperCase() :  item
+                      )).join("")
+                  }
+              }
+          });
+      </script>
+  </body>
+  ```
+
+  ##  map() 过滤器
+
+  ``` js
+  map.((item,index) => {
+      if(index === 0 ) {
+          return item
+      }
+  })
+  ```
+
+## 过滤器 - 传参数 和串联使用
+
+语法：
+
+​	`{{  msg |  toLower（1） }}`  传参数 不会影响value  value 永远排在第一位置
+
+​	`{{  msg |  toLower（1） | reverse }}` reverse  拿到的value 是 toLower 过滤过的值
+
+案例 ：  将 ABC  中 的b（b可以为指定索引）转化为小写 并且倒转
+
+``` html
+<body>
+    <div id="app">
+        <p>{{name | toLower(1) | reverse}}</p> //如果写2 则index是第三位
+        <input type="text" v-model="name">
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                name: 'ABC'
+            },
+            methods: {
+
+            },
+            filters: {
+                toLower(value, index) {
+                    return value.split("").map((item, i) => (
+                        i === index ? item.toLowerCase() : item
+                    )).join("")
+                }，
+                reverse(value) {
+                    return value.split("").reverse().join("")
+                }
+            }
+        });
+    </script>
+</body>
+```
+
+其中 tolower 的方法 原始写法为
+
+![1568191719505](C:\github 库\My_Node\vue.assets\1568191719505.png)
+
+## debugger
+
++ 在 需要断点的地方输入debugger；即可
++ 会在调试的时候 自动进入该断点
++ 天使完毕之后 删除
+
+
+
+
+
+## MOMENT .js 类库 的使用
+
+``` js
+//引入js
+<script src="../moment.min.js"></script>
+//定义一个过滤器
+Vue.filter('time', (value，a) => {
+            return moment(value).format( a || "YYYY-MM-DD hh:mm:ss")
+        })
+//插值表达式
+{{  timeNow | time（YYYY-MM-DD hh:mm:ss）  }}
+```
+
++ 在 插值表达式中传入实参使用
++ filter 函数体中 format 判断 a 如果有a  则用a 的格式  没有的 按照默认值
+
+
+
+## ref 操作DOM元素
+
+
+
+作用： 通过ref 来获取 DOM 元素
+
+语法： 给元素标签内定义 ref 属性 然后 通过 方法中 $refs.名称 来获取DOM 对象
+
+``` html
+<body>
+    <div id="app">
+        <input type="text" ref="getInput">
+        <input type="button" value="按钮" @click="getInputValue">
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var vm = new Vue({
+            el: '#app',
+            data: {
+            },
+            methods: {
+                getInputValue() {
+                    this.$refs.getInput.value = 'abc'
+                },
+            }
+        });
+    </script>
+</body>
+```
+
+## 	数组some findindex  indexOf filter方法：
+
+![1568210005480](vue.assets/1568210005480.png)
+
+![1568212031799](vue.assets/1568212031799.png)
 
 remove 可以采用es6的箭头函数
 
@@ -587,11 +907,7 @@ Vue.filter（）Vue.filter('toUpper',function(){
 
 ![1568104507291](C:\github 库\My_Node\vue.assets\1568104507291.png)
 
-# debugger调试
 
-
-
-## refs 操作DOM元素
 
 
 
