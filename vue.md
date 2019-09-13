@@ -246,7 +246,7 @@ item in items  // item为当前遍历属性对象的值
 
 + 如果想测试 arr.length === 0 的效果 可以在控制台输入 vm.arr=[];
 
-# 第一天总结
+## 第一天总结
 
 ![1568022088140](.\vue.assets\1568022088140.png)
 
@@ -1164,69 +1164,132 @@ json-server --watch db.json  //--watch 为 监视
 
 其中 Resourcehttp://localhost:3000/user  在加一个 /id  表示  切换id 可以 读取json文件
 
+## restful 接口规则
 
++ 用`不同的请求类型`发送`同样一个请求标识` 所对应的处理是`不同`的
++ 通过http请求 的不同类型 （post delete updata put get）来判断是什么业务操作
++ crud 增删改查
++ json-server  应用了restful 的规范
 
+语法：
 
+如果db.json 中的表名为 “user“
 
+1. 增加一条数据 get /地址 {name:"lisi" , age : "18"}  // 这里不需要id
+2. 删除单条数据 delete/ 地址 / id
+3. 修改数据 put /地址 / id 修改内容 {name:"lisi" , age : "18"}
+4.  查询数据 get /地址
+   1.  查询单条数据 get 地址 / id
+5. 模糊搜索 get/地址?字段名_like="关键字“
 
+## axios的使用
 
+axios调用的两种方式
 
-
-
-
-
-
-### 渲染一句话：
-
-#### 插值表达式
++ 如果 用 axios（）.then（） 的方法请求get方式 可以省略里面写 method：'' , 因为默认为get 请求
++ 路径参数  也就是 url？id=3  之类的  写在axios对象中的 data属性中
++ post 请求成功的码为status = 201 别的都为200 
 
 ``` html
 <body>
     <div id="app">
-        <p>{{ msg }}</p>  //mvvm中的 v
+
     </div>
+    <script src="../vue.js"></script>
+    <script src="../axios.min.js"></script>
+    <script>
+        //两种调用方式 
+        //第一种
+        axios.get("http://localhost:3000/user").then((result) => {
+            console.log(result.data)
+        });
+        //第二种
+        axios({
+            url: 'http://localhost:3000/user',
+            method：'get'，
+            data：""
+        }).then(result => console.log(result.data))
+        var vm = new Vue({
+            el: '#app',
+            data: {},
+            methods: {}
+        });
+    </script>
 </body>
-
-<script src="../js/Vue.js v2.6.10.js"></script> //首先引入vue.js
-<script>
-	//实例化一个Vue对象 构造函数
-    var nm = new Vue({ 
-        el:'#app',		//表示要控制页面上的哪儿个区域
-        //data 就是mvvm中的m
-        data:{			//data属性中，存放的是 el 中要用到的数据
-            msg:'hello vue'	//不需要再操作DOM元素了
-        }
-    })
-
-</script>
 ```
 
-#### 防止渲染闪烁
+## watch属性
 
-``` 
-<style>
-	[v-cloak] {
-		display:none;
-	}
-</style>
-```
+` 未学明白`
 
-### v-text
+![1568392915635](vue.assets/1568392915635.png)
+
+
+
+## 组件
+
++ vue 实例有el 选项  组件中 有 template 选项
++ data 中 需要 return{} 一个 新对象 相当于 new Object（）
++ template 中 需要一个 div 根标签
++ 每个组件都是独立运行的  没有关系
+
+### 定义全局组件
 
 ``` html
-//会覆盖原本元素中的内容
-
+Vue.component('组件名',{
+	template : '<div>  写组件元素<p>{{name}}</p>  </div>',
+	data(){
+	return{
+			name:'123'
+		}
+	}
+})
 ```
 
-#### v-html
+案例：点击+ - 实现组件
 
-也会覆盖 但是当做html解析
+``` html
+<body>
 
-#### v-bind
+    <div id="app">
+        <set></set>
+        <set></set>
+        <set></set>
+        <set></set>
+    </div>
+    <script src="../vue.js"></script>
 
-v-bind:  是指要绑定的属性
-
-v-on  绑定事件
+    <script>
+        Vue.component("set", {
+            template: `
+        <div>
+            <span @click="cut">-</span>
+            <span>{{content}}</span>
+            <span @click="add">+</span>
+        </div>
+    `,
+            data() {
+                return {
+                    content: 0
+                }
+            },
+            methods: {
+                cut() {
+                    this.content--
+                },
+                add() {
+                    this.content++
+                }
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {},
+            methods: {}
+        });
+    </script>
+</body>
+```
 
 
 
