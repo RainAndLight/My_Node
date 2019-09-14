@@ -1103,6 +1103,10 @@ computed: {
 
 ###  promise
 
++ 为了解决回调地狱的问题
++ 异步请求 接收返回值 只能在回调函数中
++ 如果下一个请求依赖于上一个请求
+
 ``` js
 new promise(function(resolve,reject){
     if(flag === 1) {
@@ -1222,6 +1226,26 @@ axios调用的两种方式
 
 ` 未学明白`
 
++ 当需要根据`数据变化 `进行`响应业务操作`，且该操作是`异步操作`时， **计算属性不能再使用**
+
++ 特征：
+  + watch 是 监听data数据中的数据项的变化对象  数据项变化 watch监控函数执行
+  + watch 不需要返回值 不需要return 
++ computed 和 watch 的区别：
+  + 计算属性必要要有返回值 所以说不能写异步请求
+  + watch 没有返回值
+
+``` html
+watch:{
+
+	data中的属性项（newValue，oldValue）{
+		逻辑
+	}
+}
+```
+
+
+
 ![1568392915635](vue.assets/1568392915635.png)
 
 
@@ -1243,10 +1267,17 @@ Vue.component('组件名',{
 			name:'123'
 		}
 	}
+	methods：{}
 })
 ```
 
+`注意 其中data 是一个返回对象  data（） {    }` 是个坑
+
 案例：点击+ - 实现组件
+
+三种方式判断
+
+![1568426411428](vue.assets/1568426411428.png)
 
 ``` html
 <body>
@@ -1290,6 +1321,418 @@ Vue.component('组件名',{
     </script>
 </body>
 ```
+
+### 局部组件
+
+就是把 Vue.component（） 换成 vue 属性选项中 的 components ：{  }   别的都一样  
+
++ 里面可以 继续嵌套一个  components：（）
+
+#### 组件嵌套：
+
++ 在谁的组件中
+
+组件通信的几种情况
+
+#### 父组件给子组件传值
+
+基本操作：
+
+1. 先定义一个属性  给谁传值就给谁的标签上定义属性  名字随便起 但是不能重复 `：名字="父元素要穿的属性的名字"`
+2. 接收props属性   和上面定义的名字一致 `写在 局部或者全局组件中`  不是实例对象选项下面
+3. 调用  在 `template中直接{{}} 这样调用`即可
+
+``` html
+<body>
+    <div id="app">
+        <content-a :title="name"></content-a> //第一步
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var obj = {
+            template: `
+            <div>
+                <p>{{name}}</p>
+                <p>{{title}}</p>			//第三步
+            </div>
+            `,
+            data() {
+                return {
+                    name: '子元素'
+                }
+            },
+            props: ["title"]			//第二步
+
+        }
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                name: '父元素'
+            },
+            methods: {},
+            components: {
+                "content-a": obj
+            }
+        });
+    </script>
+</body>
+```
+
+案例：父传子 城市
+
+``` html
+<body>
+    <div id="app">
+        <content-a :list="city"></content-a>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var obj = {
+            template: `<div>
+                    <p v-for="item in list">{{item}}</p>
+                </div>`,
+            data() {
+                return {
+                    content: ''
+                }
+            },
+            props: ["list"]
+        }
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                city: ["bj", "cq"]
+            },
+            methods: {},
+            components: {
+                "content-a": obj
+            }
+        });
+    </script>
+</body>
+```
+
+
+
+### 子组件 给 父组件传值
+
++ $emit  => 相当于 在`当前实例`抛出一个`自定义`事件
++ 需要监听谁就在哪儿个标签
+
+``` html
+<body>
+    <div id="app">
+        <!-- 想监听谁写在哪儿个标签上 -->
+        <contnent-a @getdata="data"></contnent-a>
+        <p>{{name}}</p>
+    </div>
+    <script src="../vue.js"></script>
+    <script>
+        var obj = {
+            template: `<div>
+                    <button @click="btn">按钮</button>
+                </div>`,
+            data() {
+                return {
+                    name: "我是子组件元素"
+                }
+            },
+            methods: {
+                btn() {
+                    // console.log(123)
+                    this.$emit("getdata", this.name) //名字，抛出内容 相当于抛出了事件 name 用，隔开抛出东西
+                }
+            }
+        }
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                name: ''
+            },
+            methods: {
+                data(name) {
+                    this.name = name
+                }
+            },
+            components: {
+                "contnent-a": obj
+            }
+        });
+    </script>
+</body>
+```
+
+
+
+## SPA-单页应用
+
++ 传统模式每个页面和内容都需要从服务器一次次请求
++ SPA模式 第一次加载会将所有的资源都请求到页面 模块之间切换不会再请求服务器
+
+SPA优点：
+
++ 速度快  `切换模块不需要经过网络请求`
++ 完全组件化开发 ，由于只有一个页面 所以原来属于一个个页面的工作被归类为一个个组件
+
+SPA缺陷：
+
++ 首屏加载慢  如何解决=》 按需加载 不刷新页面请求js模块
++ 不利于SEO优化 =》 服务端渲染
++ 开发难度高
+
+![1568467271788](vue.assets/1568467271788.png)
+
+SPA原理：
+
+![1568467463649](vue.assets/1568467463649.png)
+
+![1568467505523](vue.assets/1568467505523.png)
+
+![1568467530144](vue.assets/1568467530144.png)
+
+结论：
+
++ 可以通过页面地址 的 锚链接来实现
++ hash位于连接地址#之后
++ hash值的改变不会触发页面刷新
++ hash值是URL地址的一部分 会储存在页面地址上 我们可以获得到
++ 可以通过事件监听has值的改变
++ 拿到了hash值就饿看哟根据不同的hash值进行不动提供的模块切换
++ 前端路由 从模块一切换到模块二 叫前端路由
+
+## js实现前端路由
+
+案例：点击4个链接时页面能显示对应的城市
+
+``` html
+<body>
+    <!-- 导航 -->
+    <a href="#bj">北京</a>
+    <a href="#tj">天津</a>
+    <a href="#cq">重庆</a>
+    <a href="#sh">上海</a>
+    <!-- 容器 -->
+    <div id="continer"></div>
+</body>
+<script>
+    var fn = function () {
+        var path = window.location.hash.substr(1)
+        var dom = document.getElementById("continer")
+        switch (path) {
+            case 'bj':
+                dom.innerText = "北京"
+                break;
+            case 'tj':
+                dom.innerText = "天津"
+                break;
+            case 'cq':
+                dom.innerText = "重庆"
+                break;
+            case 'sh':
+                dom.innerText = "上海"
+                break;
+
+            default:
+                break;
+        }
+
+    }
+    window.onhashchange = fn
+    fn()
+</script>
+```
+
+## Vue-router 
+
++ vue-router 是官方的路由管理器 
++ 实现根据不同的请求地址而显示不同的组件
+
+使用：
+
+1. 引入js
+2. 设置导航 router-link
+3. 容器 router-view
+4. 实例化 一个 vue-router 对象 var router = new VueRouter()
+5. 配置路由表  hash对应的组件或者模板
+
+``` html
+//基本操作
+<body>
+    <div id="app">
+        <router-link to="uzi">uzi</router-link>
+        <router-link to="777">明凯</router-link>
+        <router-link to="skt">Faker</router-link>
+        <router-view></router-view>
+    </div>
+    <script src="../vue.js"></script>
+    <script src="../vue.router.js"></script>
+    <script>
+        var router = new VueRouter({
+            routes: [{
+                    path: "/",
+                    component: {
+                        template: `<div>LOL伟大的召唤师</div>`
+                    }
+                }, {
+                    path: "/uzi",
+                    component: {
+                        template: `<div>一场金色的雨</div>`
+                    }
+                }, {
+                    path: "/777",
+                    component: {
+                        template: `<div>7酱</div>`
+                    }
+                }, {
+                    path: "/skt",
+                    component: {
+                        template: `<div>Faker大魔王</div>`
+                    }
+                },
+
+            ]
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {},
+            methods: {},
+            router
+        });
+    </script>
+</body>
+```
+
+### 动态路由
+
++ 点击列表页跳转到详情页是 跳转的链接需要携带参数 会导致页面path不同
++ 当path不同 却需要 对应同一个组件时 需要用到 动态路由这一概念
+
+操作：
+
+![1568474674592](vue.assets/1568474674592.png)
+
+1. 在路由表中的path中后面 加一个 参数 ：id
+2. 在 router-link 中 加入实参 /stem/勇士
+
+``` html
+<body>
+    <div id="app">
+        <router-link to="/lol/uzi">uzi</router-link>
+        <router-link to="/lol/明凯">明凯</router-link>
+        <router-link to="/lol/Faker">Faker</router-link>
+        <router-view></router-view>
+    </div>
+    <script src="../vue.js"></script>
+    <script src="../vue.router.js"></script>
+    <script>
+        var router = new VueRouter({
+            routes: [{
+                path: "/",
+                component: {
+                    template: `<div>LOL伟大的召唤师</div>`
+                }
+            }, {
+                path: '/lol/:name',
+                component: {
+                    template: `<div>我是{{$route.params.name}}的粉丝</div>`
+                }
+            }]
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {},
+            methods: {},
+            router
+        });
+    </script>
+</body>
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
