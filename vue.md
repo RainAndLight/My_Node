@@ -1648,6 +1648,203 @@ SPA原理：
 </body>
 ```
 
+## 重新定向
+
+`redirect："路径"`
+
+### 编程式导航
+
++ this.r$router可以拿到当前路由对象的实例
++ 路由对象的实例方法有push replace go（）
+
+## 嵌套路由
+
++ 初始化一个路由
+
++ 二级路由用`children ： []`
++ 二级路由中 如果要`写默认` `path 则为 空`即可 ,也就是 path为"" 时候 代表默认一级路由
++ 二级路由写path 时  可以省略 /副路由 直接写子路由 也就是 `如果要写斜杠 则路径需要写全，如果不写斜杠 则可以直接写`
+
+案例：
+
++ 准备写二级路由的时候，在一级路由中的template中 写 二级路由的link 和 view 其中link的锚点路径记得加一级路由`前缀`
+
+``` html
+<body>
+    <div id="app">
+        <router-link to="/游戏">游戏</router-link>
+        <router-link to="/教育">教育</router-link>
+        <router-link to="/音乐">音乐</router-link>
+        <router-view class="father"></router-view>
+    </div>
+    <script src="../vue.js"></script>
+    <script src="../vue.router.js"></script>
+    <script>
+        var router = new VueRouter({
+            routes: [{
+                path: '/',
+                redirect: '/游戏'
+            }, {
+                path: '/游戏',
+                component: {
+                    template: '<div>Welcome To BeiJing</div>'
+                }
+            }, {
+                path: '/教育',
+                component: {
+                    template: '<div>我是教育</div>'
+                }
+            }, {
+                path: '/音乐',
+                component: {
+                    template: `<div>
+                        <p>我是音乐</p>
+                        <router-link to="/音乐/game">二次元</router-link>
+                        <router-link to="/音乐/music">轻音乐</router-link>
+                        <router-link to="/音乐/rap">rap</router-link>
+                        <router-view class="son"></router-view>
+                        </div>`
+                },
+                children: [{
+                    path: "",
+                    component: {
+                        template: `<div>欢迎来到bilibili</div>`
+                    }
+                }, {
+                    path: 'game',
+                    component: {
+                        template: '<div>二次元</div>'
+                    }
+                }, {
+                    path: 'music',
+                    component: {
+                        template: '<div>轻音乐</div>'
+                    }
+                }, {
+                    path: 'rap',
+                    component: {
+                        template: '<div>rap</div>'
+                    }
+                }]
+            }]
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {},
+            methods: {},
+            router,
+        });
+    </script>
+</body>
+```
+
+
+
+## vue-cli 工具
+
++ 是一个命令行工具 也支持图形化
++ node 。 js 开发的
++ 暂时不关注原理
+
+安装：
+
+``` bash
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
+
+
+
+``` js
+cnpm i -g @vue/cli //全局安装脚手架
+```
+
+
+
+``` bash
+npm install -g @vue/cli-init  //兼容2.0
+```
+
+创建一个项目：（V 2.0）
+
+``` bash
+$ vue  init webpack-simple heroes  // heroes 为项目名称
+$ npm run dev   //跑起来
+```
+
+创建一个项目：（V 3.0）
+
+``` bash
+$ vue create heroes // create(创建) 为关键字
+# 切换到当前目录
+$ cd  heroes 
+//下依赖
+npm i
+# 在开发模式下 启动运行项目
+$ npm run serve
+```
+
+### vue-cli 项目解释
+
+> .bablelr=>存放 babel编译的配置信息
+>
+> .editorconfig => 存放编辑器的配置信息
+>
+> .gitignore => git忽略文件
+>
+> index.html => 单页应用的html
+>
+> package.json => 用于存放依赖信息 及 其他项目信息
+>
+> README.md => 项目介绍信息 github上的页面信息
+>
+> webpack.config.js => wepack工具的配置文件 => webpack是一个前端工程化的工具
+
++ npm run dev （开发期） 之后 node.js 会将 main.js 打包成 build.js
++ build.js 不是一个屋里文件  是一个在内存中的 二进制流
++ npm run build （开发完成）生成物理文件 build.js 上线
++ main.js 实例化vue  `整个项目的根组件`
++ 嵌套其他组件
++ 引用组件  import form 
++ 使用组件  export
++ 会将main 中所有的import 引用
+
+``` bash
+--save
+-S 运行时依赖
+-D 开发依赖
+```
+
+## ES6中的引出和引入
+
+node.js 中 用require 和 from  这个 react vue angular 都可以使用
+
+### 导入：
+
+``` js
+import Vue from "vue" // 别名和地址
+```
+
++ 导入模板
++ Vue 为别名
++ 后面引号为路径 比如 "./App.vue" 但是如果引入包  则可以直接写包名
++ 在main.js 中 实例vue 为项目的根组件，可以无限嵌套组件
+
+### 导出：
+
++ 是个组件  其中 template 在外面写
+
+``` js
+export default {
+    
+}
+```
+
++ .vue 这个文件 默认导出
+
+## vue单文件组件及入口解析
+
++ template  script style  相当于 html + js + css
++ 全局组件中 除了 router 都可以写
 
 
 
@@ -1667,6 +1864,15 @@ SPA原理：
 
 
 
+引入css less sass 等 main中 import "路径"
+
+
+
+
+
+![1568531974810](vue.assets/1568531974810.png)
+
+Vue.use（VueRouter）
 
 
 
