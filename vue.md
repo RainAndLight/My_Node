@@ -1604,353 +1604,311 @@ SPA原理：
 
 ### 动态路由
 
-+ 点击列表页跳转到详情页是 跳转的链接需要携带参数 会导致页面path不同
-+ 当path不同 却需要 对应同一个组件时 需要用到 动态路由这一概念
+- 点击列表页跳转到详情页是跳转的链接需要携带参数会导致页面路径不同
+- 当路径不同却需要对应同一个组件时需要用到动态路由这一概念
 
 操作：
 
-![1568474674592](vue.assets/1568474674592.png)
+[![1568474674592](vue.assets/1568474674592-1568602730448.png)](https://github.com/RainAndLight/My_Node/blob/master/vue.assets/1568474674592.png)
 
-1. 在路由表中的path中后面 加一个 参数 ：id
-2. 在 router-link 中 加入实参 /stem/勇士
+1. 在路由表中的路径中后面加一个参数：id
+2. 在router-link中加入实参/ stem /勇士
 
-``` html
-<body>
-    <div id="app">
-        <router-link to="/lol/uzi">uzi</router-link>
-        <router-link to="/lol/明凯">明凯</router-link>
-        <router-link to="/lol/Faker">Faker</router-link>
-        <router-view></router-view>
-    </div>
-    <script src="../vue.js"></script>
-    <script src="../vue.router.js"></script>
-    <script>
-        var router = new VueRouter({
-            routes: [{
-                path: "/",
-                component: {
-                    template: `<div>LOL伟大的召唤师</div>`
-                }
-            }, {
-                path: '/lol/:name',
-                component: {
-                    template: `<div>我是{{$route.params.name}}的粉丝</div>`
-                }
-            }]
-        })
-        var vm = new Vue({
-            el: '#app',
-            data: {},
-            methods: {},
-            router
-        });
-    </script>
-</body>
+```html
+< body >
+    < div  id = “ app ” >
+        < router-link  to = “ / lol / uzi ” > uzi </ router-link >
+        < router-link  to = “ / lol /明凯” >明凯</ router-link >
+        < router-link  to = “ / lol / Faker ” > Faker </ router-link >
+        < router-view > </ router-view >
+    </ div >
+    < script  src = “ ../vue.js ” > </ script >
+    < script  src = “ ../vue.router.js ” > </ script >
+    < script >
+        var router =  new  VueRouter（{ 
+            routes ： [{ 
+                path ： “ / ”，
+                component ： { 
+                    template ： ` <div> LOL伟大的召唤师</ div> `
+                 } 
+            }，{ 
+                path ： ' / lol /：name '，
+                组件： { 
+                    template ： ` <div>我是{{$ route.params.name}}的粉丝</ div> `
+                 }
+            }] 
+        }）
+var vm = new Vue（{             el ：'＃app '，            data ： {}，            methods ： {}，            router         }）; </ script >          
+ 
+
+
+
+
+    
+</ body >
 ```
 
 ## 重新定向
 
-`redirect："路径"`
+```js
+redirect："路径"
+```
 
 ### 编程式导航
 
-+ this.r$router可以拿到当前路由对象的实例
-+ 路由对象的实例方法有push replace go（）
+- this.r $路由器可以拿到当前路由对象的实例
+- 路由对象的实例方法有push replace go（）
 
 ## 嵌套路由
 
-+ 初始化一个路由
-
-+ 二级路由用`children ： []`
-+ 二级路由中 如果要`写默认` `path 则为 空`即可 ,也就是 path为"" 时候 代表默认一级路由
-+ 二级路由写path 时  可以省略 /副路由 直接写子路由 也就是 `如果要写斜杠 则路径需要写全，如果不写斜杠 则可以直接写`
+- 初始化一个路由
+- 二级路由用`children ： []`
+- 二级`写默认` `path 则为 空`路由中如果要即可，也就是路径为“”时候代表默认一级路由
+- 二级路由写路径时可以省略/副路由直接写子路由也就是 `如果要写斜杠 则路径需要写全，如果不写斜杠 则可以直接写`
 
 案例：
 
-+ 准备写二级路由的时候，在一级路由中的template中 写 二级路由的link 和 view 其中link的锚点路径记得加一级路由`前缀`
+- 准备写二级路由的时候，在一级路由中的模板中写二级路由的link和view其中link的锚点路径记得加一级路由`前缀`
 
-``` html
-<body>
-    <div id="app">
-        <router-link to="/游戏">游戏</router-link>
-        <router-link to="/教育">教育</router-link>
-        <router-link to="/音乐">音乐</router-link>
-        <router-view class="father"></router-view>
-    </div>
-    <script src="../vue.js"></script>
-    <script src="../vue.router.js"></script>
-    <script>
-        var router = new VueRouter({
-            routes: [{
-                path: '/',
-                redirect: '/游戏'
-            }, {
-                path: '/游戏',
-                component: {
-                    template: '<div>Welcome To BeiJing</div>'
-                }
-            }, {
-                path: '/教育',
-                component: {
-                    template: '<div>我是教育</div>'
-                }
-            }, {
-                path: '/音乐',
-                component: {
-                    template: `<div>
-                        <p>我是音乐</p>
-                        <router-link to="/音乐/game">二次元</router-link>
-                        <router-link to="/音乐/music">轻音乐</router-link>
-                        <router-link to="/音乐/rap">rap</router-link>
-                        <router-view class="son"></router-view>
-                        </div>`
-                },
-                children: [{
-                    path: "",
-                    component: {
-                        template: `<div>欢迎来到bilibili</div>`
-                    }
-                }, {
-                    path: 'game',
-                    component: {
-                        template: '<div>二次元</div>'
-                    }
-                }, {
-                    path: 'music',
-                    component: {
-                        template: '<div>轻音乐</div>'
-                    }
-                }, {
-                    path: 'rap',
-                    component: {
-                        template: '<div>rap</div>'
-                    }
-                }]
+```html
+< body >
+    < div  id = “ app ” >
+        < router-link  to = “ /游戏” >游戏</ router-link >
+        < router-link  to = “ /教育” >教育</ router-link >
+        < router-link  to = “ /音乐” >音乐</ router-link >
+        < router-view  class = “ father ” > </ router-view >
+    </ div >
+    < script  src = “ ../vue.js ” > </ script >
+    < script  src = “ ../vue.router.js ” > </ script >
+    < script >
+        var router =  new  VueRouter（{ 
+            routes ： [{ 
+                path ： ' / '，
+                redirect ： ' /游戏'
+             }，{ 
+                path ： ' /游戏'，
+                组件： { 
+                    模板： ' <div>欢迎来到BeiJing </ div> '
+                 } 
+            ，{ 
+                path ： ' /教育'，
+                组件： { 
+                    template ： ' <div>我是教育</ div> '
+                 } 
+            }，{ 
+                路径： ' /音乐'，
+                组件： { 
+                    模板： ` <div> 
+                        <p>我是音乐</ p> 
+                        <router-链接到=“/音乐/游戏”>二次元</ router-link> 
+                        <router-link to =“/音乐/音乐”>轻音乐</ router-link> 
+                        <router-link to =“/音乐/ rap” >说唱</路由器链路>
+                        <router-view class =“son”> </ router-view> 
+                        </ div> `
+                 }，
+                children ： [{ 
+                    path ： “ ”，
+                    component ： { 
+                        template ： ` <div>欢迎来到bilibili </ div> `
+                     } 
+                ，{ 
+                    path ： ' game '，
+                    component ： { 
+                        template ： '<div>二次元</ div> '
+                     } 
+                }，{ 
+                    路径： '音乐'，
+                    组件： { 
+                        模板： ' <div>轻音乐</ div> '
+                     } 
+                }，{ 
+                    路径： '说唱'，
+                    组件： { 
+                        模板： ' <div> rap </ div> '
+                    } 
+                }] 
             }]
-        })
-        var vm = new Vue({
-            el: '#app',
-            data: {},
-            methods: {},
-            router,
-        });
-    </script>
-</body>
+        }）
+var vm = new Vue（{             el ：'＃app '，            data ： {}，            methods ： {}，            router，        }）; </ script >          
+ 
+
+
+
+
+    
+</ body >
 ```
 
+## vue-cli工具
 
-
-## vue-cli 工具
-
-+ 是一个命令行工具 也支持图形化
-+ node 。 js 开发的
-+ 暂时不关注原理
+- 是一个命令行工具也支持图形化
+- node.js开发的
+- 暂时不关注原理
 
 安装：
 
-``` bash
-npm install -g cnpm --registry=https://registry.npm.taobao.org
-```
-
-
-
-``` js
-cnpm i -g @vue/cli //全局安装脚手架
-```
-
-
-
-``` bash
-npm install -g @vue/cli-init  //兼容2.0
+```bash
+npm install -g cnpm --registry = https：//registry.npm.taobao.org
+cnpm i - g @vue / cli //全局安装脚手架
+npm install -g @ vue / cli-init //兼容2.0
 ```
 
 创建一个项目：（V 2.0）
 
-``` bash
-$ vue  init webpack-simple heroes  // heroes 为项目名称
-$ npm run dev   //跑起来
+```bash
+$ vue init webpack-simple heroes //英雄为项目名称
+$ npm run dev //跑起来
 ```
 
 创建一个项目：（V 3.0）
 
-``` bash
-$ vue create heroes // create(创建) 为关键字
-# 切换到当前目录
-$ cd  heroes 
+```bash
+$ vue create heroes // create（创建）为关键字
+ ＃切换到当前目录 
+$ cd   heroes
 //下依赖
-npm i
-# 在开发模式下 启动运行项目
+我是谁
+＃在开发模式下启动运行项目 
 $ npm run serve
 ```
 
-### vue-cli 项目解释
+### vue-cli项目解释
 
-> .bablelr=>存放 babel编译的配置信息
+> .bablelr =>存放babel编译的配置信息
 >
-> .editorconfig => 存放编辑器的配置信息
+> .editorconfig =>存放编辑器的配置信息
 >
 > .gitignore => git忽略文件
 >
-> index.html => 单页应用的html
+> index.html =>单页应用的html
 >
-> package.json => 用于存放依赖信息 及 其他项目信息
+> package.json =>用于存放依赖信息及其他项目信息
 >
-> README.md => 项目介绍信息 github上的页面信息
+> README.md =>项目介绍信息github上的页面信息
 >
-> webpack.config.js => wepack工具的配置文件 => webpack是一个前端工程化的工具
+> webpack.config.js => wepack工具的配置文件=> webpack是一个前端工程化的工具
 
-+ npm run dev （开发期） 之后 node.js 会将 main.js 打包成 build.js
-+ build.js 不是一个屋里文件  是一个在内存中的 二进制流
-+ npm run build （开发完成）生成物理文件 build.js 上线
-+ main.js 实例化vue  `整个项目的根组件`
-+ 嵌套其他组件
-+ 引用组件  import form 
-+ 使用组件  export
-+ 会将main 中所有的import 引用
+- npm run dev（开发期）之后node.js会将main.js打包成build.js
+- build.js不是一个屋里文件是一个在内存中的二进制流
+- npm run build（开发完成）生成物理文件build.js上线
+- main.js实例化vue `整个项目的根组件`
+- 嵌套其他组件
+- 引用组件导入表格
+- 使用组件导出
+- 会将main中所有的import引用
 
-``` bash
---save
--S 运行时依赖
--D 开发依赖
+```bash
+- 救
+-S运行时依赖
+-D开发依赖
 ```
 
 ## ES6中的引出和引入
 
-node.js 中 用require 和 from  这个 react vue angular 都可以使用
+node.js中用require和from this个react vue angular都可以使用
 
 ### 导入：
 
-``` js
-import Vue from "vue" // 别名和地址
+```js
+ 从“ vue ” //别名和地址导入Vue   
 ```
 
-+ 导入模板
-+ Vue 为别名
-+ 后面引号为路径 比如 "./App.vue" 但是如果引入包  则可以直接写包名
-+ 在main.js 中 实例vue 为项目的根组件，可以无限嵌套组件
+- 导入模板
+- Vue为别名
+- 后面引号为路径比如“./App.vue”但是如果引入包则可以直接写包名
+- 在main.js中实例vue为项目的根组件，可以无限嵌套组件
 
 ### 导出：
 
-+ 是个组件  其中 template 在外面写
+- 是个组件其中template在外面写
 
-``` js
-export default {
+```js
+export  default {
     
 }
 ```
 
-+ .vue 这个文件 默认导出
-
-## vue单文件组件及入口解析
-
-+ template  script style  相当于 html + js + css
-+ 全局组件中 除了 router 都可以写
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-引入css less sass 等 main中 import "路径"
-
-
-
-
-
-![1568531974810](vue.assets/1568531974810.png)
-
-Vue.use（VueRouter）
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-小结：![1568108089012](.\vue.assets\1568108089012.png)
-
-![1567955357563](C:\github 库\mynote\vue.assets\1567955357563.png)
-
-![1567954347835](C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\1567954347835.png)
-
-`this指向 实例化对象` 所以调用data里面的属性 方法 必须用this.什么
-
-
-
-# 打包工具Webpack，Gulp
+- .vue这个文件默认导出
+
+## VUE单文件组件及入口解析
+
+- 模板脚本风格相当于html + js + css
+- 全局组件中除了router都可以写
+
+引入css less sass等main中导入“路径”
+
+[![1568531974810](https://github.com/RainAndLight/My_Node/raw/master/vue.assets/1568531974810.png)](https://github.com/RainAndLight/My_Node/blob/master/vue.assets/1568531974810.png)
+
+## 示例项目效果演示
+
++ 有路由 还有二级路由 嵌套路由
+
++ ``` bash
+  --save 和 -S  都是添加运行依赖
+  ```
+
+
+
+## 基础-示例项目-提取路由模块
+
+**`目标-任务`** 在示例项目中 提取路由模块,并应用视图
+
+> **`路径`**  提取路由模块
+>
+> 1  安装路由 
+>
+> ```bash 
+> npm i vue-router // 安装路由模块
+> ```
+>
+> 2   在**main.js**中引入 路由模块
+>
+> ```js
+> import VueRouter from 'vue-router ' // 引用router
+> ```
+>
+> 3  使用router 
+>
+> ```js 
+> Vue.use(VueRouter) // 使用router
+> ```
+>
+> 4   实例化 router 
+>
+> ```js 
+> const router = new VueRouter({
+> routes:[] //实例化routes
+> })
+> ```
+>
+> 5  配置理由表
+>
+> ```js
+> const router = new VueRouter({
+> routes: [
+> { path: "/heroes", component: AppList },
+> { path: "/foo", component: Foo },
+> { path: "/bar", component: Bar }
+> ] // 路由表
+> }); // 实例化router
+> ```
+>
+> * 挂载到路由上的组件 => 路由级组件 => 原来的一个个页面
+>
+> **注意** 一般来说 路由表 需要单独一个文件   可以将router提取成一个js文件 
+>
+> 6   提取 三个组件 appList(主要 )  Foo(组件) Bar(组件) 完善路由表
+>
+> ```html
+> <template>
+> <div>Bar组件</div>
+> </template>
+> 
+> <script>
+> export default {};
+> </script>
+> 
+> <style>
+> </style>
+> ```
 
