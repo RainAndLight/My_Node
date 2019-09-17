@@ -1912,3 +1912,231 @@ export  default {
 > </style>
 > ```
 
+## 优化
+
++ 优化axios
++ 优化请求头
++ 整理目录
+  + 组件分类
+  + 路由级组件
+  + pages/views
+  + 普通组件
++ 过渡
+
+## 钩子函数
+
+![1568687415246](vue.assets/1568687415246.png)
+
+![1568687616938](vue.assets/1568687616938.png)
+
+四个阶段：
+
+beforeCreate
+
+
+
+## elementUI框架
+
+安装：
+
+``` bash
+cnpm i element-ui -S
+```
+
+在main.js引入 框架 全局路由 css
+
+``` js
+import ElementUI from "element-ui"
+import 'element-ui/lib/theme-chalk/index.css'
+Vue.use(ElementUI)
+```
+
+## ESlint
+
+
+
+
+
+## 插槽
+
+### 默认插槽
+
+在子组件中用slot占据位置，在父逐渐中传入提花你内容的方式
+
+父组件
+
+``` html
+<template>
+  <div>
+    hello word
+    <child-a>
+      <span style="color:red">黑马</span>    //这里这个地方占坑
+    </child-a>
+  </div>
+</template>
+
+<script>
+import child from "./defaultslotChild";
+export default {
+  components: {
+    "child-a": child
+  }
+};
+</script>
+
+<style>
+</style>
+```
+
+子组件
+
+``` html
+<template>
+  <div>
+        
+      <p><slot></slot>牛逼</p>   // slot 中的内容就是父组件中的占坑内容
+      <p><slot></slot>强</p>
+      <p><slot></slot>吊</p>
+  </div>
+</template>
+
+<script>
+export default {};
+</script>
+
+<style>
+</style>
+```
+
+### 后备插槽
+
++ ​    <button>
+
+  ​      <child-a>登录</child-a>
+
+  ​    </button>   
+
+  `此时登录为后备内容 如果 子组件中 slot 有内容  则用子组件的内容`
+
+``` html
+<template>
+  <div>
+    用户名：
+    <input type="text" />
+    <br />密   码：
+    <input type="text" />
+    <br />
+    <button>
+      <child-a>登录</child-a>
+    </button>
+    <button>
+      <child-a></child-a>
+    </button>
+  </div>
+</template>
+
+<script>
+import child from "./defaultslotChild";
+export default {
+  components: {
+    "child-a": child
+  }
+};
+</script>
+
+<style>
+</style>
+```
+
+``` html
+<template>
+  <div>
+    <slot>注册</slot>
+  </div>
+</template>
+
+<script>
+export default {};
+</script>
+
+<style>
+</style>
+```
+
+### 具名插槽
+
+传入不同的位置的内容去替换不同位置的slot属性
+
+定义一个name属性
+
++ 在 子组件中 的 slot 中 加一个name属性
++ 父组件中 如果想要调用这个slot 就在标签中写 <p slot="name">
+
+### 作用域插槽
+
++ 调用子组件中的属性  应该调用 ：abc=“name” 中的abc
+
+``` html
+<template>
+  <div>
+    <child-a>
+      <template slot-scope="o">{{o.abc + o.def}}</template>
+    </child-a>
+  </div>
+</template>
+
+<script>
+import child from "./defaultslotChild";
+export default {
+  components: {
+    "child-a": child
+  }
+};
+</script>
+
+<style>
+.a {
+  width: 800px;
+  height: 300px;
+  background: red;
+}
+.aa {
+  width: 800px;
+  height: 100px;
+  background-color: green;
+}
+.b {
+  width: 800px;
+  height: 100px;
+  background-color: blue;
+}
+.c {
+  width: 800px;
+  height: 100px;
+  background-color: black;
+}
+</style>
+```
+
+``` html
+<template>
+  <div>
+    <slot :abc="name" :def="age"></slot>
+  </div>
+</template>
+
+<script>
+export default {
+  data(){
+    return {
+      name : '这是子组件中名字name=亚丝娜',
+      age : '子组件中的age=18'
+    }
+  }
+};
+</script>
+
+<style>
+</style>
+```
+
