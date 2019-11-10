@@ -146,6 +146,8 @@ let a = (
             arr.map((item,index)=> {
             return <li key={item.id}>{item.name}</li>
             })
+            //代码简化
+            arr.map(item => <li key={item.id}>{item.name}</li>)
         }
     </ul>
 )
@@ -153,3 +155,14 @@ let a = (
 
 > `注意：只要要写js了，就要用{}包起来`
 
+## React 样式
+
+1. 行内样式
+
+   ``` react
+   let a = <div style={{color:'red',background:'balck'}}></div>
+   ```
+
+   `两个{}代表js中写对象`
+
+2. 
