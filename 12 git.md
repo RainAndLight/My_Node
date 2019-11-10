@@ -225,7 +225,12 @@ $ git pull [remote] [branch]
 
 回退：
 
-<img src="./image-04/回退.png">
+``` bash
+//git版本回退
+git reset --hard commitID
+```
+
+
 
 
 
