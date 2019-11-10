@@ -124,4 +124,32 @@ let a = () => {
 ReactDOM.render(a(),document.getElementById('root'))
 ```
 
-## 
+## 数组map
+
++ 原生用法
+
+![image-20191110113812442](README.assets/image-20191110113812442.png)
+
++ React 用法
+
+![image-20191110114128007](README.assets/image-20191110114128007.png)
+
+``` react 
+let arr = [
+    { name: '小米', id: 1 },
+    { name: '华为', id: 2 }
+]
+
+let a = (
+    <ul>
+        {
+            arr.map((item,index)=> {
+            return <li key={item.id}>{item.name}</li>
+            })
+        }
+    </ul>
+)
+```
+
+> `注意：只要要写js了，就要用{}包起来`
+
