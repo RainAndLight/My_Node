@@ -473,11 +473,115 @@ var c = [...a,...b] //1,2,3,4,5,6
 
 
 
+
+
+代码：
+
+​	注意：`想要渲染，需要用到componentDidUpdata(){}`
+
+``` react
+class Parent extends React.Component{
+    state = {
+        foo:'123'
+    }
+    add=(val)=>{
+        this.setState({
+            foo:val
+        })
+    }
+    render(){
+        return (
+            <div>
+                父组件
+                {this.state.foo}
+                <Son1 name={this.add}></Son1>
+            </div>
+        )
+    }
+} 
+
+class Son1 extends React.Component{
+    state={
+        foo:'son1'
+    }
+    add=()=>{
+        this.props.name(this.state.foo)
+    }
+    render(){
+        
+        return (
+            <div>
+                子组件
+                <button onClick={this.add}>点击给父组件传值</button>
+            </div>
+        )
+    }
+}
+```
+
+
+
+
+
 ### 兄弟传值
 
 亲兄弟找父亲
 
+
+
 ![image-20191111145128857](README.assets/image-20191111145128857.png)
+
+``` react
+class Parent extends React.Component{
+    state = {
+        foo:0
+    }
+    add=(val)=>{
+        this.setState({
+            foo:val
+        })
+    }
+    render(){
+        return (
+            <div>  
+                <Son1 value={this.state.foo}></Son1>
+                <Son2 value={this.add}></Son2>
+            </div>
+        )
+    }
+}
+
+class Son1 extends React.Component{
+    state={
+        foo:'son1'
+    }
+    render(){
+        return (
+            <div>
+                Son1接收值：{this.props.value}
+            </div>
+        )
+    }
+}
+class Son2 extends React.Component{
+    state={
+        foo:'Son2的值'
+    }
+    render(){
+        return (
+            <div>
+                <button onClick={()=>{
+                    this.props.value(this.state.foo)
+                }}>点击</button>
+            </div>  
+        )
+    }
+}
+```
+
+
+
+
 
 表兄弟
 
