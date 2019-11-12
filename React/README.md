@@ -155,7 +155,7 @@ let a = (
 
 > `注意：只要要写js了，就要用{}包起来`
 
-## React 样式
+## React的样式
 
 1. 行内样式
 
@@ -165,4 +165,481 @@ let a = (
 
    `两个{}代表js中写对象`
 
-2. 
+2. clssName
+
+   ``` react
+   //style 样式的写法
+   //先导入
+   import './index.css'
+   
+   let a = (
+       <div className='box'>
+           hello , word 
+       </div>
+   )
+   ```
+
+   + className = 'box'
+
+## React 创建组件的两种方式
+
+### 1.函数创建组件
+
+要求：
+
+1. `首字母必须大写`
+
+2. `必须return`，没有的话可以`return null`
+3. 使用函数组件当成`标签`使用就可以了，单标签也可以
+
+``` react
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+
+function First (){
+    return <div>hello word... </div>
+}
+
+
+ReactDOM.render(<First/>, document.getElementById('root'))
+```
+
+### 2. class 类组件
+
+ES6 class 类的回忆：
+
+![image-20191110150121062](README.assets/image-20191110150121062.png)
+
+继承：
+
+![image-20191110150448061](README.assets/image-20191110150448061.png)
+
+稍微复杂的写法：
+
++ 这样会报错，需要在constructor中写一个`super()`
+
+![image-20191110150532556](README.assets/image-20191110150532556.png)
+
+
+
+
+
+react 类组件正儿八经的：
+
+在一个页面写：
+
+``` react
+class Abc extends React.Component{
+    render(){
+        return (
+            <div>
+                hello word 
+            </div>
+        )
+    }
+}
+```
+
+引入组件：
+
+组件部分
+
+``` react 
+import React from 'react'
+
+class Header extends React.Component{
+    render(){
+        return <div>hello world</div>
+    }
+}
+
+export default Header
+```
+
+入口文件部分(index)
+
+``` react 
+import Header from './header/header'
+```
+
+
+
+注意：
+
+`入口文件必须导入 react 和 react-dom`
+
+## 事件绑定
+
+示例：
+
+``` react
+//事件绑定
+class Header extends React.Component{
+    abc(event){
+        console.log(153);
+        
+    }
+    render(){
+        return (
+            <button onClick={this.abc}>点击</button>
+        )
+    }
+}
+```
+
+注意：
+
+`this.abc`后面不能加（） 否则没有点击直接调用
+
+事件对象：
+
+``` react
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+class Header extends React.Component {
+    abc(e){
+        console.log('事件对象',e);
+        
+    }
+    render(){
+        return (
+            <button onClick={this.abc}>点击</button>
+        )
+    }
+}
+
+ReactDOM.render(<Header /> , document.getElementById('root'))
+```
+
+
+
+​		e.preventdeault()阻止默认行为
+
+## 数据  state数据
+
+state 就相当于Vue中的data
+
++ 无状态组件，没有操作state数据 函数组件
+  + 只是单纯的显示
++ 有状态组件 操作state组件 类组件
+  + 可以点击和发ajax
++ 数据写到state中
+  + 使用，this.state.变量名
+
+``` react 
+class Header extends React.Component {
+    state = {
+        foo:'world'
+    }
+    render(){
+        return (
+            <div>
+                hello {this.state.foo} 
+            </div>
+        )
+    }
+}
+```
+
+### 修改数据
+
++ 修改数据必须用 this.setState({ 变量：值 })
+
++ 不能直接赋值改修 
+
+![image-20191110164126738](README.assets/image-20191110164126738.png)
+
+++ -- 案例：
+
+``` react
+
+```
+
+this指向问题：
+
+1. `箭头函数`
+
+![image-20191110165738649](README.assets/image-20191110165738649.png)
+
+2. 第二种改法
+
+   ![image-20191110165853869](README.assets/image-20191110165853869.png)
+
+3. 改变this指向 bind
+   ![image-20191110171411875](README.assets/image-20191110171411875.png)
+
+
+
+
+
+### 复习：改变this 的指向
+
+bind 改变this指向 并返回新函数
+
+call 改变this指向  并执行函数
+
+apply 改变this指向	并执行函数
+
+
+
+
+
+
+
+## 受控表单变单元素板顶了state数据
+
+实现了类似Vue中的v-modle效果
+
+![image-20191111093149538](README.assets/image-20191111093149538.png)
+
+基本代码：
+
+``` react
+import React from 'react'
+import ReactDOM from 'react'
+
+
+
+class Foo extends React.Component{
+
+    state = {
+        value:''
+    }
+    getValue=(e)=>{
+        this.setState({
+            value:e.target.value
+        })
+    }
+    render(){
+        return (
+            <input onChange={this.getValue} value={this.state.value}></input>
+            <div>{this.state.value}</div>
+        )
+    }
+}
+
+
+ReactDOM.render(<Foo></Foo>,document.getElementById('root'))
+```
+
+
+
+
+
+## 扩展运算符
+
+``` js
+var a = [1,2,3]
+var b = [4,5,6]
+var c = [...a,...b] //1,2,3,4,5,6
+```
+
+
+
+
+
+## ref(了解)
+
+![image-20191111112952540](README.assets/image-20191111112952540.png)
+
+代码实现：
+
+``` react
+
+```
+
+
+
+
+
+## 子父兄传值
+
+### 父用子组件：
+
+![image-20191111113307050](README.assets/image-20191111113307050.png)
+
+### 父向子传值
+
+1. 在需要传值的组件上面，写上属性
+2. 在子组件直接使用this.props获取
+
+![image-20191111113608330](README.assets/image-20191111113608330.png)
+
+### 子传父
+
+![image-20191111114417970](README.assets/image-20191111114417970.png)
+
+
+
+### 兄弟传值
+
+亲兄弟找父亲
+
+![image-20191111145128857](README.assets/image-20191111145128857.png)
+
+表兄弟
+
+redux相当于Vuex
+
+
+
+### 爷孙传值
+
+![image-20191111150451018](README.assets/image-20191111150451018.png)
+
+![image-20191111150555274](README.assets/image-20191111150555274.png)
+
+比较复杂
+
+
+
+
+
+只要稍微复杂一点都是用的是redux
+
+
+
+
+
+
+
+
+
+### 函数组件父传子
+
+![image-20191111153931514](README.assets/image-20191111153931514.png)
+
++ 这里不用this.props.name直接可以传值
+
+
+
+
+
+
+
+### 父传子中，标签中间的内容
+
+`this.props.children`获得
+
+![image-20191111155333281](README.assets/image-20191111155333281.png)
+
+
+
+
+
+
+
+## props类型验证
+
+![image-20191111161606594](README.assets/image-20191111161606594.png)
+
+1. ``` bash
+   yarn add props-types
+   ```
+
+2. ``` react
+   import PropsTypes from 'props-types'
+   ```
+
+3. 要验证组件 .propType={传的名字：验证规则}
+
+   ``` react
+   //在组件外面写
+   组件.propTypes={
+       name:PropTypes.string
+   }
+   ```
+
+   
+
+如果没有传prop值，则给一个默认的值
+
+组件.defaultProps={名字：默认值}
+
+
+
+
+
+## React生命周期
+
+![image-20191111172016466](README.assets/image-20191111172016466.png)
+
+``` react
+class Parent extends React.Component{
+    //constructor 创建组件时最先执行
+    /*
+        作用：1. 初始化state
+              2. 为事件处理程序绑定this
+    */ 
+    constructor(){
+        super()
+        this.state={
+            count:0
+        }
+    }
+    // 简化写法
+	state={
+        count:0
+    }
+
+    // render 每次渲染都会触发 `注意，不能调用setState()`
+    render(){
+        return (
+            <div>
+                {console.log('render')}
+                <button 
+                onClick={()=>{
+                    var newCount = this.state.count - 1
+                    this.setState({
+                        count:newCount
+                    })
+                }}
+                >-</button>
+                {this.state.count}
+                <button 
+                onClick={()=>{
+                    var newCount = this.state.count + 1
+                    this.setState({
+                        count:newCount
+                    })
+                }}
+                >+</button>
+            </div>
+        )
+    }
+
+
+    //DOM渲染完成后
+    /*
+        作用：1. 发送Ajax请求
+              2. DOM操作
+    */
+    componentDidMount(){
+        console.log('componentDidMount');
+        
+    }
+
+
+    // 组件更新后触发
+    /*
+        作用：1. 发送Ajax请求
+              2. DOM操作
+        `注意，要用setState（）必须放在一个if条件中`
+    */
+    componentDidUpdate(){
+        console.log("componentDidUpdate");
+        
+    }
+
+
+    // 卸载
+    // 作用：清理定时器
+    componentWillUnmount(){
+        console.log('componentWillUnmount');
+        
+    }
+}
+```
+
