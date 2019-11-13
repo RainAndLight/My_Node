@@ -662,6 +662,8 @@ redux相当于Vuex
 
 组件.defaultProps={名字：默认值}
 
+![image-20191113090906296](README.assets/image-20191113090906296.png)
+
 
 
 
@@ -747,3 +749,66 @@ class Parent extends React.Component{
 }
 ```
 
+不常用的：
+
++ 所有带will的
++ ![image-20191113092530241](README.assets/image-20191113092530241.png)
+  + 可以用来控制组件是否要更新
+
++ ![image-20191113092836833](README.assets/image-20191113092836833.png)
+
+
+
+
+
+
+
+## 组件复用
+
+两种方式：
+
+1. render props模式
+2. 高阶组件（HOC）
+
+### render props模式
+
+步骤：
+
+1. 给组件写一个render函数，然后return 内容
+
+2. 子组件用this.props.render（） 接收
+
+![image-20191113094723099](README.assets/image-20191113094723099.png)
+
+> `推荐使用标签内容的方式，然后用this.props.Children()的方式接收`
+
+![image-20191113103044955](README.assets/image-20191113103044955.png)
+
+
+
+
+
+### 高阶组件（HOC）
+
+把一个组件传入函数 函数里面用另外一个组件包裹住 返回
+
+这样做 组件不仅自己有 还有包裹的那个公共部分
+
+![image-20191113105305143](README.assets/image-20191113105305143.png)
+
+
+
+
+
+
+
+## setState（）说明
+
++ 是异步的
++ 多次修改相同的，值会执行一次，他会合并修改内容
++ `setState（{}，()=>{}）`，第二个参数拿到的数据是最行新的
++ 正常情况还是原来的修改方式，只有修改需要立刻拿到数据，才需要第二个回调函数
+
+还有一个复杂语法，了解：ps(也是异步的)
+
+![image-20191113114806207](README.assets/image-20191113114806207.png)
