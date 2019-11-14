@@ -817,7 +817,21 @@ class Parent extends React.Component{
 
 
 
-## 下午耽误的20分内容
+## jsx语法的转化过程
+
++ jsx仅仅是React.createElement() 的语法糖
++ jsx 语法被 @babel/preset-react 插件编译 为 React.createElement() 帮助我们转化成浏览器认识的
+
+
+
+## webpack 如何编译
+
++ 有一个文件叫 webpack.config.js  在Vue和React中被隐藏起来了，因为脚手架自带
++ wabpack.config.js
+  + entry 入口
+  + output 打包后的文件
+  + loader 下载各种loader css-loader less-loader....
+  + plugin 小插件
 
 
 
@@ -912,3 +926,311 @@ react的优化：
 
 2. 导入：
    import Router from 'react-router-dom'
+
+
+
+![image-20191114094414757](README.assets/image-20191114094414757.png)
+
+
+
+
+
+### 路由的原理
+
+
+
+#### hash模式
+
+![image-20191114094936348](README.assets/image-20191114094936348.png)
+
+
+
+#### history 模式
+
+不带#的，的地址，叫`history 模式`
+
+![image-20191114095349368](README.assets/image-20191114095349368.png)
+
+
+
+
+
+### React,Vue，两种模式都可以用
+
+![image-20191114095901396](image-20191114095901396.png)
+
++ 改变包裹，即可改变模式
++ React 一般用history模式，打包后需要传到服务器才正常
++ hash 模式，打包后 即使没有传到服务器也正常
+
+两者监听函数不同：
+
+​	![image-20191114100206971](README.assets/image-20191114100206971.png)
+
+
+
+## 声明式导航
+
+直接写link或者a链接
+
+``` html
+<link to="/home">去home页面</link>
+```
+
+
+
+## 编程式导航
+
+使用js来跳转
+
+![image-20191114102905844](README.assets/image-20191114102905844.png)
+
+![image-20191114103206917](README.assets/image-20191114103206917.png)
+
+
+
+
+
+## 默认地址匹配
+
+![image-20191114105124931](README.assets/image-20191114105124931.png)
+
+exact是精确匹配路径，否则就是模糊匹配，只要前面相似，都会匹配
+
+
+
+
+
+
+
+## 路由参数
+
+![image-20191114111854448](README.assets/image-20191114111854448.png)
+
+传参 在path路径后/:id 
+
+### 如何拿到这个值呢:
+
+​	在componentDidMount里
+
+`this.props.math.params.id`
+
+``` react
+//入口文件
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import App from './app.js'
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+
+
+``` react
+//app组件中
+import React from 'react'
+
+import {BrowserRouter as Router , Route , Link} from 'react-router-dom'
+
+import Login from './components/login'
+import Detail from './components/detail'
+
+export default class App extends React.Component{
+    render(){
+        return (
+            <Router>
+                根组件
+                <Route exact path="/login" component={Login}></Route>
+                <Link to="/login">123</Link>
+                <Route exact path='/detail/:id' component={Detail}></Route>
+            </Router>
+        )
+    }   
+}
+```
+
+
+
+``` react
+//detail组件中
+import React from 'react'
+export default class Detail extends React.Component{
+    render () {
+        return (
+            <div>详情页面</div>
+        )
+    }
+
+    componentDidMount(){
+        console.log("传来的id是",this.props.match.params.id);
+    }
+} 
+```
+
+
+
+
+
+
+
+## 嵌套路由
+
+注意：
+
+​	父路由就不能写exact 精确匹配了
+
+
+
+## Switch（了解）
+
+![image-20191114115947210](README.assets/image-20191114115947210.png)
+
+path相同，只显示第一个
+
+
+
+
+
+## 路由的跳转
+
+### 重定向
+
+重新跳转，redirect
+
+``` react
+import { Redirect } from 'react-router-dom'
+<Route
+    exact
+    path="/"
+    render={
+        ()=>{
+            return <Redirect to="/login"></Redirect>
+        }
+    }
+    >
+
+</Route>
+```
+
+
+
+
+
+## 一个简单的跳转案例
+
+效果：
+
+![image-20191114155139136](README.assets/image-20191114155139136.png)
+
+点击下方tabbar栏可以跳转到子路由
+
+
+
+
+
+实现：
+
+
+
+入口文件：
+
+``` react
+import React from 'react'
+import ReactDOM from 'react-dom'
+
+import App from './app.js'
+
+ReactDOM.render(<App />, document.getElementById('root'))
+```
+
+
+
+app.js文件：
+
+``` react
+import React from 'react'
+
+import {BrowserRouter as Router , Route , Link , Redirect} from 'react-router-dom'
+
+import Home from './components/home'
+
+export default class App extends React.Component{
+    render(){
+        return (
+            <Router>
+                <Route
+                    exact
+                    path="/"
+                    render={
+                        ()=>{
+                            return <Redirect to="/home"></Redirect>
+                        }
+                    }
+                ></Route>
+                <Route path="/home" component={Home}></Route>
+            </Router>
+        )
+    }   
+}
+```
+
+
+
+
+
+home 组件：
+
+``` react
+import React from 'react'
+import { Route , Link } from 'react-router-dom'
+import '../css/home.css'
+import News from '../components/news'
+import My from '../components/my'
+export default class Home extends React.Component{
+    render () {
+        return (
+            <div className="a">
+                <Route path="/home/news" component={News}></Route>
+                <Route path="/home/my" component={My}></Route>
+                <div className='tabbar'>
+                    <Link className="news" to="/home/news">
+                        新闻
+                    </Link>
+                    <div className="my" onClick={()=>{
+                        this.props.history.push('/home/my')
+                    }}>
+                        我的
+                    </div>
+                </div>
+            </div>
+            
+        )
+    }
+}
+```
+
++ 跳转的方式可以用Link 或者 点击事件完成
++ component 文件夹 方式
+
+
+
+
+
+# 项目
+
+## 技术栈
+
+![image-20191114162225647](README.assets/image-20191114162225647.png)
+
+
+
+## 启动
+
+![image-20191114172243345](README.assets/image-20191114172243345.png)
+
+
+
+下载的包：
+
+![image-20191114172450386](README.assets/image-20191114172450386.png)
