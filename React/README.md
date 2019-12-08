@@ -811,7 +811,7 @@ class Parent extends React.Component{
 
 还有一个复杂语法，了解：ps(也是异步的)
 
-![image-20191113114806207](README.assets/image-20191113114806207.png)
+![image-20191113114806207](README.assets/image-20191113114806207.png)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 
 
 
@@ -1234,3 +1234,576 @@ export default class Home extends React.Component{
 下载的包：
 
 ![image-20191114172450386](README.assets/image-20191114172450386.png)
+
+
+
+## 过程：
+
+![image-20191116091624557](README.assets/image-20191116091624557.png)
+
+
+
+
+
+## 项目结构调整
+
+![image-20191116092543043](README.assets/image-20191116092543043.png)
+
+
+
+## ant-mobile 
+
+#### 阿里巴巴移动端组件库的使用：
+
+1. 下载
+2. 导入 import {} from 'ant-mobile'
+3. 导入css
+4. 引入组件
+
+### 路由
+
+![image-20191116102229357](README.assets/image-20191116102229357.png)
+
+## 初始化样式
+
+index.css：
+
+``` css
+/* 
+  全局样式
+*/
+html,
+body {
+  font-family: 'Microsoft YaHei';
+  color: #333;
+  background-color: #fff;
+}
+
+html,
+body,
+#root,
+.App,
+.map,
+.home,
+.houselist,
+#container {
+  height: 100%;
+}
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+* {
+  box-sizing: border-box;
+
+  /* 
+    解决 轮播图 手动滚动时，报错的问题：
+    https://www.jianshu.com/p/04bf173826aa
+    https://juejin.im/post/5ad804c1f265da504547fe68
+  */
+  touch-action: pan-y;
+}
+
+ul,
+p,
+dd,
+h1,
+h3 {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+.fixed {
+  overflow: hidden;
+}
+
+.loading {
+  text-align: center;
+  padding-top: 100px;
+}
+
+.houseloading {
+  height: 115px;
+  background-color: #f6f5f6;
+}
+.StickyFixed{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index:9999;
+}
+```
+
+
+
+
+
+## tabbar
+
+![image-20191116112349709](README.assets/image-20191116112349709.png)
+
++ 先import 引入 tabbar
++ state 函数 内容复制
+
+![image-20191116114023110](README.assets/image-20191116114023110.png)
+
+
+
+## 字体图标
+
+![image-20191116143608804](README.assets/image-20191116143608804.png)
+
+
+
+
+
+
+
+## axios
+
+Vue中是这样发送“
+
+![image-20191116164216944](README.assets/image-20191116164216944.png)
+
+
+
+
+
+## 轮播图，可以写成项目难点
+
+settimeout ， 也可以解决问题 ，但是不正统
+
++ 难点，滑动报错
++ 改变true不自动轮播
++ 返回数据时候，setState也不自动轮播
+
+
+
+
+
+
+
+## Sass
+
+less 需要下载 less-loader
+
+sass 也需要下载 node-sass
+
+文件后缀 index.scss
+
+
+
+
+
+## 本地图片
+
+react 和 Vue 
+
++ 本地图片是不能直接src引入的
++ http开头的是可以直接用
++ 非要用本地图片的话，用import导入即可
+
+
+
+
+
+## axios 传参数
+
+get：
+
+​	![image-20191117095053334](README.assets/image-20191117095053334.png)
+
+
+
+
+
+post：
+
+​	
+
+## 租房小组
+
+![image-20191117111650054](README.assets/image-20191117111650054.png)
+
+
+
+
+
+## 顶部搜索栏
+
+![image-20191117144604824](README.assets/image-20191117144604824.png)
+
+
+
+## 定位
+
+原生js的方式：
+
+``` js
+navigator.geolocation.getCurrentPosition(()=>{}) //没用
+```
+
+![image-20191117145555169](README.assets/image-20191117145555169.png)
+
+
+
+
+
+## 百度地图API：
+
+老师的ak：
+
+ak:    zglDtYGLlnC4f9lehyYdhuODeR4e5Sk4
+
+我的ak：4ATlhddqMOGoPFoU1SYNNI747tPGpLwB
+
+
+
+react使用百度地图的一个bug：
+
+​	在public 里面的index中 引入js，但是也不能直接使用，比如你引入jQuery 可以直接使用$一样
+
+
+
+这时候，在BMap加一个前缀，window
+
+
+
++ 11显示区 13显示镇 15街道 小区
+
+
+
+
+
+截取的方法
+
+![image-20191117161958905](README.assets/image-20191117161958905.png)
+
+
+
+
+
+
+
+## object 的方法
+
+![image-20191119092634206](README.assets/image-20191119092634206.png)
+
+
+
+
+
+## 城市列表
+
+### 城市列表返回数据修改
+
+![image-20191119092718998](README.assets/image-20191119092718998.png)
+
+
+
+
+
+### 获取当前定位
+
+![image-20191119102514273](README.assets/image-20191119102514273.png)
+
+
+
+
+
+
+
+这里需要看视频
+
+![image-20191119103027277](README.assets/image-20191119103027277.png)
+
+
+
+
+
+
+
+![image-20191119104038666](README.assets/image-20191119104038666.png)
+
+
+
+
+
+## 长列表性能优化
+
+方案：
+
++ 懒渲染
++ `可视区域渲染`
+
+
+
+#### 懒加载
+
+每次显示规定的数据  再加载  再上拉加载就新加
+
+#### React-virtualized 可视区渲染
+
+只有看见的区域 渲染数据 其他地方是没有的 效率高
+
+![image-20191119144354518](README.assets/image-20191119144354518.png)
+
+![image-20191119150834996](README.assets/image-20191119150834996.png)
+
+
+
+
+
+### 字母点击事件及高亮
+
+<img src="README.assets/image-20191120092521580.png" alt="image-20191120092521580" style="zoom:150%;" />
+
+![image-20191120092621643](README.assets/image-20191120092621643.png)![image-20191120092633935](README.assets/image-20191120092633935.png)
+
+### 点击城市，修改定位城市，跳转首页
+
+
+
+indexof 有的话返回索引， 没有返回-1
+
+
+
+
+
+1. 没有房源的话就提示 toast
+2. 有的话就修改 localstorage 里面的city
+3. 跳转首页
+4. 修改首页的获取定位的方法，用utils 封装的组件
+
+
+
+
+
+## 封装导航栏
+
+![image-20191120102925814](README.assets/image-20191120102925814.png)
+
+
+
+## withRouter
+
+注意：`如果react 中 组件时/map 这种路由直接渲染的页面可以正常使用路由信息，但是如果非路由页面。不能直接使用路由信息，需要使用高阶组件`
+
+![image-20191120104519960](README.assets/image-20191120104519960.png)这样用withRouter 导出的时候包裹起来
+
+
+
+
+
+就可以正常使用路由信息了
+
+
+
+
+
+### 对封装组件传值进行prop验证
+
+![image-20191120110215660](README.assets/image-20191120110215660.png)
+
+
+
+
+
+![image-20191120110159216](README.assets/image-20191120110159216.png)
+
+
+
+
+
+
+
+## 样式的覆盖问题
+
+
+
+现在写的scss、都是局部样式，只要类名相同，样式就会都起效
+
+
+
+vue中 style 中 写 scoped
+
+
+
+react 中如何解决：
+
+1. 起名的时候 `map.module.css`
+2. import styles from './index.module.css'
+3. 使用的时候，得这样用，<div className={styles.news}></div>
+
+![image-20191120114030248](README.assets/image-20191120114030248.png)
+
+
+
++ 如果要在`局部样式中写全局样式`：
+
+![image-20191120114840806](README.assets/image-20191120114840806.png)
+
+
+
+### css-modules 的原理
+
+帮我们把类名重新随机生成
+
+
+
+
+
+## 根据城市名字更换经纬度
+
+### 创建页面
+
+![image-20191120150241393](README.assets/image-20191120150241393.png)
+
+
+
+### 地图控件
+
++ 手写一个小控件
++ 然后循环遍历 ， 生成不同的控件
+
+
+
+
+
+
+
+## 点击小区名，获取房源
+
+
+
+### 获取数据
+
+![image-20191122103651790](README.assets/image-20191122103651790.png)
+
+
+
+### 渲染
+
+复制 html 和 css 
+
+然后map 循环小盒子 ， 循环后再循环 i 标签 就好了
+
+
+
+## 移动地图 用panBy（X,Y）
+
+### 移动端事件
+
+ontouchesstart / move / end
+
+
+
+e.changedTouches[0].clientX 相对于正常的左上角
+
+e.changedTouches[0].pageX 相对于页面的左上角，可能滚出去
+
+
+
+window.innerWith / Height  获取屏幕的宽/高
+
+
+
+### 三个小问题
+
+![image-20191122152128093](README.assets/image-20191122152128093.png)
+
+
+
+
+
+# axios 地址配置
+
+## vue中的配置
+
+![image-20191122154708439](README.assets/image-20191122154708439.png)
+
+## react的配置
+
+![image-20191122154759901](README.assets/image-20191122154759901.png)
+
+
+
+在utils 中创建 api.js 中配置
+
+
+
+## 配置发开和上线的接口ip
+
++ 根目录创建文件![image-20191122161215231](README.assets/image-20191122161215231.png)
+
++ 在api axios 配置中配置 不同的 接口地址请求头
+
+![image-20191122161458407](README.assets/image-20191122161458407.png)
+
+
+
+
+
+![image-20191122161814595](README.assets/image-20191122161814595.png)
+
+
+
+
+
+地址写在![image-20191122161828646](README.assets/image-20191122161828646.png)中
+
+
+
+
+
+### 环境变量配置
+
+
+
+
+
+# list 组件开始
+
+## 导航栏
+
++ 首页一样 ， 所以封装一个公共组件
+
+
+
+
+
+## filter 组件图示
+
+![image-20191123093012419](README.assets/image-20191123093012419.png)
+
+
+
+
+
+![image-20191123104105638](README.assets/image-20191123104105638.png)
+
+这个写法 ， 字传父修改 state中的内容 ， 后面的会把前面的覆盖
+
+![image-20191123104721819](README.assets/image-20191123104721819.png)
+
+
+
+
+
+## if判断中 ， continue跳出，下一个判断
+
+![image-20191125093136959](README.assets/image-20191125093136959.png)
+
+
+
+
+
+## findindex 返回索引
+
+![image-20191125115303358](README.assets/image-20191125115303358.png)
