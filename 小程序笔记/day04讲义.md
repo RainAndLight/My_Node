@@ -185,7 +185,7 @@
 
   + 循环swiperData数据配合swiper组件快速搭建结构
 
-    ```javascript
+    ```react
     <swiper>
       <swiper-item wx:for="{{swiperData}}">
         <image src="{{item.image_src}}"></image>

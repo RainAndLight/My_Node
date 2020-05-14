@@ -219,6 +219,17 @@ $ git pull [remote] [branch]
 
 <img src="./image-04/添加、提交、推送、拉取、克隆.png">
 
+`总结`
+
+``` CMD
+echo "# app_headerline" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/RainAndLight/app_headerline.git
+git push -u origin master
+```
+
 
 
 
